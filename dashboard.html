@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="GeoRakshak Authority Dashboard - Landslide risk, impact intelligence and emergency prioritisation">
+
+    <title>Authority Dashboard | GeoRakshak</title>
+
+    <!-- Shared CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+    <header class="navbar">
+        <div class="container nav-container">
+
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+    <img src="assets/images/logo.png" alt="GeoRakshak Logo">
+</div>
+
+                <div class="logo-text">
+                    <span class="logo-name">GeoRakshak</span>
+                    <span class="logo-tagline">Landslide Intelligence</span>
+                </div>
+            </a>
+
+
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                <a href="map.html" class="nav-link">Risk Map</a>
+                <a href="reports.html" class="nav-link">Reports</a>
+                <a href="alerts.html" class="nav-link">Alerts</a>
+            </nav>
+
+
+            <div class="nav-actions">
+
+                <a href="reports.html" class="btn btn-primary">
+                    Report Incident
+                </a>
+
+                <button
+                    class="menu-toggle"
+                    id="menuToggle"
+                    aria-label="Toggle navigation menu"
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+            </div>
+
+        </div>
+    </header>
+
+
+    <main>
+
+        <!-- =========================
+             DASHBOARD HEADER
+        ========================== -->
+        <section class="dashboard-header">
+
+            <div class="container">
+
+                <div class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span>›</span>
+                    <span>Authority Dashboard</span>
+                </div>
+
+
+                <div class="dashboard-title-row">
+
+                    <div>
+                        <span class="section-label">
+                            DISTRICT INTELLIGENCE CENTER
+                        </span>
+
+                        <h1>
+                            Situation <span>Overview</span>
+                        </h1>
+
+                        <p>
+                            Monitor landslide risk, assess potential impact,
+                            prioritise emergencies and support faster
+                            on-ground decision-making.
+                        </p>
+                    </div>
+
+
+                    <div class="dashboard-header-actions">
+
+                        <div class="dashboard-live-status">
+                            <span class="status-dot"></span>
+                            System Active
+                        </div>
+
+                        <button
+                            class="btn btn-outline"
+                            id="dashboardRefresh"
+                        >
+                            ↻ Refresh Data
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             DASHBOARD CONTENT
+        ========================== -->
+        <section class="dashboard-section">
+
+            <div class="container">
+
+
+                <!-- =========================
+                     TOP STATISTICS
+                ========================== -->
+                <div class="dashboard-stats">
+
+                    <article class="dashboard-stat-card">
+
+                        <div class="dashboard-stat-top">
+                            <span>Active Alerts</span>
+                            <span class="stat-icon">⚠</span>
+                        </div>
+
+                        <strong id="activeAlertsCount">8</strong>
+
+                        <p>
+                            <span class="stat-up">↑ 2</span>
+                            since last update
+                        </p>
+
+                    </article>
+
+
+                    <article class="dashboard-stat-card critical-stat-card">
+
+                        <div class="dashboard-stat-top">
+                            <span>Critical Zones</span>
+                            <span class="stat-icon">●</span>
+                        </div>
+
+                        <strong id="criticalZonesCount">2</strong>
+
+                        <p>
+                            Immediate attention required
+                        </p>
+
+                    </article>
+
+
+                    <article class="dashboard-stat-card">
+
+                        <div class="dashboard-stat-top">
+                            <span>Population at Risk</span>
+                            <span class="stat-icon">👥</span>
+                        </div>
+
+                        <strong id="populationRiskCount">4,280</strong>
+
+                        <p>
+                            Across monitored risk zones
+                        </p>
+
+                    </article>
+
+
+                    <article class="dashboard-stat-card">
+
+                        <div class="dashboard-stat-top">
+                            <span>Roads at Risk</span>
+                            <span class="stat-icon">↔</span>
+                        </div>
+
+                        <strong id="roadsRiskCount">6</strong>
+
+                        <p>
+                            2 require immediate verification
+                        </p>
+
+                    </article>
+
+                </div>
+
+
+                <!-- =========================
+                     MAIN DASHBOARD GRID
+                ========================== -->
+                <div class="dashboard-grid">
+
+
+                    <!-- =========================
+                         RISK MAP CARD
+                    ========================== -->
+                    <section class="dashboard-card map-dashboard-card">
+
+                        <div class="dashboard-card-header">
+
+                            <div>
+                                <h2>District Risk Map</h2>
+                                <p>
+                                    Current geospatial risk overview
+                                </p>
+                            </div>
+
+                            <a href="map.html" class="text-btn">
+                                Open Full Map →
+                            </a>
+
+                        </div>
+
+
+                        <!-- Map Placeholder -->
+                        <div
+                            class="dashboard-map"
+                            id="dashboardMap"
+                        >
+
+                            <div class="map-grid-lines"></div>
+
+
+                            <div class="map-zone zone-low"></div>
+                            <div class="map-zone zone-moderate"></div>
+                            <div class="map-zone zone-high"></div>
+                            <div class="map-zone zone-critical"></div>
+
+
+                            <div class="map-marker marker-critical">
+                                <span></span>
+                                <strong>Zone A-17</strong>
+                            </div>
+
+
+                            <div class="map-marker marker-high">
+                                <span></span>
+                                <strong>Zone B-08</strong>
+                            </div>
+
+
+                            <div class="map-legend">
+
+                                <div>
+                                    <span class="legend-color low-color"></span>
+                                    Low
+                                </div>
+
+                                <div>
+                                    <span class="legend-color moderate-color"></span>
+                                    Moderate
+                                </div>
+
+                                <div>
+                                    <span class="legend-color high-color"></span>
+                                    High
+                                </div>
+
+                                <div>
+                                    <span class="legend-color critical-color"></span>
+                                    Critical
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- =========================
+                         EMERGENCY PRIORITIES
+                    ========================== -->
+                    <section class="dashboard-card priorities-card">
+
+                        <div class="dashboard-card-header">
+
+                            <div>
+                                <h2>Emergency Priorities</h2>
+                                <p>
+                                    Ranked by risk and potential impact
+                                </p>
+                            </div>
+
+                            <a href="alerts.html" class="text-btn">
+                                View All →
+                            </a>
+
+                        </div>
+
+
+                        <div class="priority-list">
+
+
+                            <article class="priority-row">
+
+                                <div class="priority-rank rank-critical">
+                                    1
+                                </div>
+
+                                <div class="priority-info">
+
+                                    <div class="priority-title">
+                                        <h3>Zone A-17</h3>
+
+                                        <span class="severity-badge critical-badge">
+                                            CRITICAL
+                                        </span>
+                                    </div>
+
+                                    <p>
+                                        1,250 people · 2 roads at risk
+                                    </p>
+
+                                </div>
+
+                                <a href="map.html" class="priority-arrow">
+                                    →
+                                </a>
+
+                            </article>
+
+
+                            <article class="priority-row">
+
+                                <div class="priority-rank rank-critical">
+                                    2
+                                </div>
+
+                                <div class="priority-info">
+
+                                    <div class="priority-title">
+                                        <h3>Road Segment R-42</h3>
+
+                                        <span class="severity-badge critical-badge">
+                                            CRITICAL
+                                        </span>
+                                    </div>
+
+                                    <p>
+                                        3 villages · Hospital access affected
+                                    </p>
+
+                                </div>
+
+                                <a href="map.html" class="priority-arrow">
+                                    →
+                                </a>
+
+                            </article>
+
+
+                            <article class="priority-row">
+
+                                <div class="priority-rank rank-high">
+                                    3
+                                </div>
+
+                                <div class="priority-info">
+
+                                    <div class="priority-title">
+                                        <h3>Zone B-08</h3>
+
+                                        <span class="severity-badge high-badge">
+                                            HIGH
+                                        </span>
+                                    </div>
+
+                                    <p>
+                                        Heavy rainfall · Risk increasing
+                                    </p>
+
+                                </div>
+
+                                <a href="map.html" class="priority-arrow">
+                                    →
+                                </a>
+
+                            </article>
+
+
+                            <article class="priority-row">
+
+                                <div class="priority-rank rank-high">
+                                    4
+                                </div>
+
+                                <div class="priority-info">
+
+                                    <div class="priority-title">
+                                        <h3>Citizen Report GR-1042</h3>
+
+                                        <span class="severity-badge high-badge">
+                                            VERIFY
+                                        </span>
+                                    </div>
+
+                                    <p>
+                                        Possible slope movement reported
+                                    </p>
+
+                                </div>
+
+                                <a href="reports.html" class="priority-arrow">
+                                    →
+                                </a>
+
+                            </article>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+
+                <!-- =========================
+                     SECONDARY GRID
+                ========================== -->
+                <div class="dashboard-secondary-grid">
+
+
+                    <!-- Risk Trend -->
+                    <section class="dashboard-card trend-card">
+
+                        <div class="dashboard-card-header">
+
+                            <div>
+                                <h2>Risk Trend</h2>
+                                <p>
+                                    Overall district risk over time
+                                </p>
+                            </div>
+
+                            <select
+                                class="dashboard-select"
+                                id="riskTrendPeriod"
+                            >
+                                <option value="24h">Last 24 Hours</option>
+                                <option value="7d">Last 7 Days</option>
+                                <option value="30d">Last 30 Days</option>
+                            </select>
+
+                        </div>
+
+
+                        <!-- Chart Placeholder -->
+                        <div class="chart-container">
+
+                            <div class="chart-y-axis">
+                                <span>High</span>
+                                <span>Medium</span>
+                                <span>Low</span>
+                            </div>
+
+
+                            <div class="trend-chart">
+
+                                <div class="chart-line line-1"></div>
+                                <div class="chart-line line-2"></div>
+                                <div class="chart-line line-3"></div>
+
+                                <div class="chart-points">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- Recommended Actions -->
+                    <section class="dashboard-card actions-card">
+
+                        <div class="dashboard-card-header">
+
+                            <div>
+                                <h2>Recommended Actions</h2>
+                                <p>
+                                    Based on current priority intelligence
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="action-list">
+
+
+                            <div class="action-item action-critical">
+
+                                <div class="action-icon">
+                                    ⚠
+                                </div>
+
+                                <div>
+                                    <span class="action-priority">
+                                        PRIORITY 1
+                                    </span>
+
+                                    <h3>
+                                        Verify Zone A-17 Immediately
+                                    </h3>
+
+                                    <p>
+                                        Dispatch a field team and assess
+                                        slope conditions.
+                                    </p>
+                                </div>
+
+                            </div>
+
+
+                            <div class="action-item">
+
+                                <div class="action-icon">
+                                    🚧
+                                </div>
+
+                                <div>
+                                    <span class="action-priority">
+                                        PRIORITY 2
+                                    </span>
+
+                                    <h3>
+                                        Review Road Segment R-42
+                                    </h3>
+
+                                    <p>
+                                        Check alternate routes and
+                                        maintain emergency access.
+                                    </p>
+                                </div>
+
+                            </div>
+
+
+                            <div class="action-item">
+
+                                <div class="action-icon">
+                                    📢
+                                </div>
+
+                                <div>
+                                    <span class="action-priority">
+                                        PRIORITY 3
+                                    </span>
+
+                                    <h3>
+                                        Issue Precautionary Alert
+                                    </h3>
+
+                                    <p>
+                                        Notify communities near Zone B-08
+                                        about increasing risk.
+                                    </p>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <a
+                            href="alerts.html"
+                            class="btn btn-outline full-width-btn"
+                        >
+                            View Alert Center →
+                        </a>
+
+                    </section>
+
+
+                    <!-- Recent Reports -->
+                    <section class="dashboard-card reports-summary-card">
+
+                        <div class="dashboard-card-header">
+
+                            <div>
+                                <h2>Recent Ground Reports</h2>
+                                <p>
+                                    Latest citizen and field updates
+                                </p>
+                            </div>
+
+                            <a href="reports.html" class="text-btn">
+                                View All →
+                            </a>
+
+                        </div>
+
+
+                        <div class="recent-reports-list">
+
+
+                            <article class="recent-report">
+
+                                <div class="report-type-icon">
+                                    📷
+                                </div>
+
+                                <div class="recent-report-content">
+
+                                    <h3>
+                                        Possible Road Debris
+                                    </h3>
+
+                                    <p>
+                                        Citizen report · GR-1042
+                                    </p>
+
+                                    <small>
+                                        1 hour ago
+                                    </small>
+
+                                </div>
+
+                                <span class="report-status verify-status">
+                                    Verify
+                                </span>
+
+                            </article>
+
+
+                            <article class="recent-report">
+
+                                <div class="report-type-icon">
+                                    📍
+                                </div>
+
+                                <div class="recent-report-content">
+
+                                    <h3>
+                                        Slope Crack Observed
+                                    </h3>
+
+                                    <p>
+                                        Field team update · FT-221
+                                    </p>
+
+                                    <small>
+                                        2 hours ago
+                                    </small>
+
+                                </div>
+
+                                <span class="report-status review-status">
+                                    Review
+                                </span>
+
+                            </article>
+
+
+                            <article class="recent-report">
+
+                                <div class="report-type-icon">
+                                    🚧
+                                </div>
+
+                                <div class="recent-report-content">
+
+                                    <h3>
+                                        Minor Road Obstruction
+                                    </h3>
+
+                                    <p>
+                                        Citizen report · GR-1038
+                                    </p>
+
+                                    <small>
+                                        3 hours ago
+                                    </small>
+
+                                </div>
+
+                                <span class="report-status monitoring-status">
+                                    Monitoring
+                                </span>
+
+                            </article>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+
+                <!-- =========================
+                     INTELLIGENCE SUMMARY
+                ========================== -->
+                <section class="intelligence-summary">
+
+                    <div class="intelligence-summary-content">
+
+                        <div class="intelligence-summary-icon">
+                            ◈
+                        </div>
+
+                        <div>
+                            <span class="section-label">
+                                AI INTELLIGENCE SUMMARY
+                            </span>
+
+                            <h2>
+                                Current Situation Assessment
+                            </h2>
+
+                            <p>
+                                GeoRakshak has identified <strong>2 critical
+                                locations</strong> requiring immediate
+                                verification. The highest-priority risk is
+                                concentrated around Zone A-17, where elevated
+                                rainfall conditions and population exposure
+                                increase potential impact.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="intelligence-summary-actions">
+
+                        <a href="alerts.html" class="btn btn-primary">
+                            Review Alerts →
+                        </a>
+
+                        <a href="map.html" class="btn btn-secondary">
+                            Open Risk Map
+                        </a>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =========================
+                     FAQ SECTION
+                ========================== -->
+                <section class="faq-section" id="faq">
+
+                    <div class="section-heading">
+
+                        <span class="section-label">
+                            AUTHORITY HELP CENTER
+                        </span>
+
+                        <h2>
+                            Frequently Asked
+                            <span>Questions</span>
+                        </h2>
+
+                        <p>
+                            Understand how GeoRakshak analyses risk and
+                            supports disaster-response decisions.
+                        </p>
+
+                    </div>
+
+
+                    <div class="faq-container">
+
+
+                        <!-- FAQ 1 -->
+                        <div class="faq-item active">
+
+                            <button class="faq-question">
+
+                                <span>
+                                    How does GeoRakshak calculate landslide risk?
+                                </span>
+
+                                <span class="faq-icon">+</span>
+
+                            </button>
+
+                            <div class="faq-answer">
+
+                                <p>
+                                    GeoRakshak combines available environmental,
+                                    weather, terrain, historical and geospatial
+                                    information to generate a location-based
+                                    risk assessment. The platform acts as a
+                                    decision-support layer and can integrate
+                                    existing government and research data sources.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- FAQ 2 -->
+                        <div class="faq-item">
+
+                            <button class="faq-question">
+
+                                <span>
+                                    Does a high risk score mean a landslide will definitely occur?
+                                </span>
+
+                                <span class="faq-icon">+</span>
+
+                            </button>
+
+                            <div class="faq-answer">
+
+                                <p>
+                                    No. A risk score represents the assessed
+                                    likelihood and current level of concern,
+                                    not a guarantee that a landslide will occur.
+                                    It should be used along with field
+                                    verification and official authority
+                                    assessment.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- FAQ 3 -->
+                        <div class="faq-item">
+
+                            <button class="faq-question">
+
+                                <span>
+                                    How are emergency priorities decided?
+                                </span>
+
+                                <span class="faq-icon">+</span>
+
+                            </button>
+
+                            <div class="faq-answer">
+
+                                <p>
+                                    GeoRakshak considers multiple factors,
+                                    including risk level, population exposure,
+                                    critical infrastructure, road connectivity
+                                    and potential isolation of communities.
+                                    This helps distinguish between high-risk
+                                    locations and situations requiring the most
+                                    urgent response.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- FAQ 4 -->
+                        <div class="faq-item">
+
+                            <button class="faq-question">
+
+                                <span>
+                                    Does the platform automatically order evacuations?
+                                </span>
+
+                                <span class="faq-icon">+</span>
+
+                            </button>
+
+                            <div class="faq-answer">
+
+                                <p>
+                                    No. GeoRakshak provides intelligence and
+                                    recommended actions. Final operational
+                                    decisions, including evacuation orders,
+                                    remain with authorised government and
+                                    disaster-management authorities.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- FAQ 5 -->
+                        <div class="faq-item">
+
+                            <button class="faq-question">
+
+                                <span>
+                                    Can citizens contribute information to the platform?
+                                </span>
+
+                                <span class="faq-icon">+</span>
+
+                            </button>
+
+                            <div class="faq-answer">
+
+                                <p>
+                                    Yes. Citizens and field teams can submit
+                                    ground-level reports such as visible cracks,
+                                    debris, road blockages or possible slope
+                                    movement. These reports can be reviewed and
+                                    used as additional situational intelligence.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- FAQ 6 -->
+                        <div class="faq-item">
+
+                            <button class="faq-question">
+
+                                <span>
+                                    What happens when a road is identified as being at risk?
+                                </span>
+
+                                <span class="faq-icon">+</span>
+
+                            </button>
+
+                            <div class="faq-answer">
+
+                                <p>
+                                    The platform can analyse road connectivity
+                                    and identify potentially affected
+                                    communities, important routes and possible
+                                    alternate access paths. It can then
+                                    recommend verification, traffic
+                                    restrictions or further emergency planning
+                                    based on the overall situation.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- FAQ 7 -->
+                        <div class="faq-item">
+
+                            <button class="faq-question">
+
+                                <span>
+                                    What is meant by "last-mile intelligence"?
+                                </span>
+
+                                <span class="faq-icon">+</span>
+
+                            </button>
+
+                            <div class="faq-answer">
+
+                                <p>
+                                    Last-mile intelligence means converting
+                                    complex data into useful information for
+                                    the people who need to act. Authorities get
+                                    priority and impact information, field teams
+                                    get location-specific operational details,
+                                    and citizens receive simple safety alerts
+                                    and reporting options.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+    <footer class="footer">
+
+        <div class="container footer-container">
+
+            <div class="footer-brand">
+
+                <a href="index.html" class="logo">
+
+                    <div class="logo-icon">
+    <img src="assets/images/logo.png" alt="GeoRakshak Logo">
+</div>
+
+                    <div class="logo-text">
+                        <span class="logo-name">GeoRakshak</span>
+
+                        <span class="logo-tagline">
+                            Landslide Intelligence Platform
+                        </span>
+                    </div>
+
+                </a>
+
+                <p>
+                    AI-powered multi-source intelligence for
+                    last-mile landslide risk awareness and
+                    decision support.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <div>
+
+                    <h4>Platform</h4>
+
+                    <a href="index.html">Home</a>
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="map.html">Risk Map</a>
+
+                </div>
+
+
+                <div>
+
+                    <h4>Services</h4>
+
+                    <a href="reports.html">Citizen Reports</a>
+                    <a href="alerts.html">Alerts</a>
+                    <a href="dashboard.html#faq">FAQs</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="container footer-bottom">
+
+            <p>
+                © 2026 GeoRakshak. AI-Powered Landslide Intelligence Platform.
+            </p>
+
+            <p>
+                Predict Risk. Understand Impact. Act in Time.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- Shared JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/dashboard.js"></script>
+
+</body>
+</html>.

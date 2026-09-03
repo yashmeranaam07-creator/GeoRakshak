@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="GeoRakshak Landslide Alerts - Real-time risk alerts and emergency notifications">
+
+    <title>Alerts | GeoRakshak</title>
+
+    <!-- Shared CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/alerts.css">
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+    <header class="navbar">
+        <div class="container nav-container">
+
+            <!-- Logo -->
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+    <img src="assets/images/logo.png" alt="GeoRakshak Logo">
+</div>
+
+                <div class="logo-text">
+                    <span class="logo-name">GeoRakshak</span>
+                    <span class="logo-tagline">Landslide Intelligence</span>
+                </div>
+            </a>
+
+
+            <!-- Navigation -->
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="map.html" class="nav-link">Risk Map</a>
+                <a href="reports.html" class="nav-link">Reports</a>
+                <a href="alerts.html" class="nav-link active">Alerts</a>
+            </nav>
+
+
+            <!-- Actions -->
+            <div class="nav-actions">
+
+                <a href="reports.html" class="btn btn-primary">
+                    Report Incident
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button
+                    class="menu-toggle"
+                    id="menuToggle"
+                    aria-label="Toggle navigation menu"
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+            </div>
+
+        </div>
+    </header>
+
+
+    <main class="alerts-page">
+
+    <!-- PAGE HEADER -->
+    <section class="alerts-hero">
+        <div class="container">
+
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span>›</span>
+                <span>Alerts</span>
+            </div>
+
+            <div class="alerts-hero-content">
+
+                <div class="alerts-intro">
+                    <span class="section-label">
+                        EMERGENCY ALERT CENTER
+                    </span>
+
+                    <h1>
+                        Risk Alerts &
+                        <span>Safety Notifications</span>
+                    </h1>
+
+                    <p>
+                        Stay informed about active landslide risks, road
+                        disruptions and emergency situations identified by
+                        the GeoRakshak intelligence platform.
+                    </p>
+                </div>
+
+                <div class="alerts-stats">
+
+                    <div class="alert-stat critical">
+                        <div class="alert-stat-icon">⚠</div>
+                        <div>
+                            <strong>2</strong>
+                            <span>Critical</span>
+                        </div>
+                    </div>
+
+                    <div class="alert-stat high">
+                        <div class="alert-stat-icon">▲</div>
+                        <div>
+                            <strong>3</strong>
+                            <span>High Risk</span>
+                        </div>
+                    </div>
+
+                    <div class="alert-stat active">
+                        <div class="alert-stat-icon">◉</div>
+                        <div>
+                            <strong>8</strong>
+                            <span>Active Alerts</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ALERTS SECTION -->
+    <section class="alerts-section">
+        <div class="container">
+
+            <div class="alerts-layout">
+
+
+                <!-- LEFT -->
+                <div class="alerts-main">
+
+                    <div class="alerts-section-top">
+
+                        <div>
+                            <span class="section-label">
+                                LIVE MONITORING
+                            </span>
+
+                            <h2>
+                                Active <span>Alerts</span>
+                            </h2>
+
+                            <p>
+                                Prioritised using risk, exposure and
+                                infrastructure impact.
+                            </p>
+                        </div>
+
+                        <div class="alerts-actions">
+
+                            <select id="alertFilter">
+                                <option value="all">All Alerts</option>
+                                <option value="critical">Critical</option>
+                                <option value="high">High Risk</option>
+                                <option value="moderate">Moderate</option>
+                            </select>
+
+                            <button
+                                type="button"
+                                class="btn btn-outline"
+                                id="refreshAlerts"
+                            >
+                                ↻ Refresh
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ALERT CARD 1 -->
+                    <article class="alert-card critical-alert">
+
+                        <div class="alert-card-header">
+
+                            <div class="alert-card-title">
+
+                                <span class="severity-tag critical-tag">
+                                    CRITICAL
+                                </span>
+
+                                <span class="alert-time">
+                                    Updated 10 minutes ago
+                                </span>
+
+                                <h3>
+                                    Immediate Attention Required
+                                    in High-Risk Zone
+                                </h3>
+                            </div>
+
+                            <div class="alert-warning-icon">
+                                ⚠
+                            </div>
+
+                        </div>
+
+                        <p class="alert-description">
+                            Heavy rainfall and terrain conditions indicate
+                            elevated landslide risk. Authorities are advised
+                            to verify the area and initiate precautionary action.
+                        </p>
+
+                        <div class="alert-meta">
+                            <span>📍 Risk Zone A-17</span>
+                            <span>👥 ~1,250 Potentially Exposed</span>
+                            <span>🛣 2 Roads at Risk</span>
+                        </div>
+
+                        <div class="recommended-action">
+                            <span>RECOMMENDED ACTION</span>
+                            <strong>Alert & Field Verification</strong>
+                        </div>
+
+                        <div class="alert-card-footer">
+                            <a href="map.html" class="btn btn-primary">
+                                View on Map →
+                            </a>
+
+                            <button class="btn btn-outline">
+                                Acknowledge
+                            </button>
+                        </div>
+
+                    </article>
+
+
+                    <!-- ALERT CARD 2 -->
+                    <article class="alert-card critical-alert">
+
+                        <div class="alert-card-header">
+
+                            <div class="alert-card-title">
+
+                                <span class="severity-tag critical-tag">
+                                    CRITICAL
+                                </span>
+
+                                <span class="alert-time">
+                                    10 min ago
+                                </span>
+
+                                <h3>
+                                    Severe Landslide Risk Detected
+                                </h3>
+                            </div>
+
+                            <div class="alert-warning-icon">
+                                ⚠
+                            </div>
+
+                        </div>
+
+                        <p class="alert-description">
+                            Extremely high rainfall and terrain risk indicators
+                            detected in the monitored zone.
+                        </p>
+
+                        <div class="alert-meta">
+                            <span>📍 Risk Zone A-17</span>
+                            <span>👥 ~1,250 Potentially Exposed</span>
+                            <span>🛣 2 Roads at Risk</span>
+                        </div>
+
+                        <div class="recommended-action">
+                            <span>RECOMMENDED ACTION</span>
+                            <strong>Alert & Field Verification</strong>
+                        </div>
+
+                        <div class="alert-card-footer">
+                            <a href="map.html" class="btn btn-primary">
+                                View on Map →
+                            </a>
+
+                            <button class="btn btn-outline">
+                                Acknowledge
+                            </button>
+                        </div>
+
+                    </article>
+
+
+                    <!-- ALERT CARD 3 -->
+                    <article class="alert-card critical-alert">
+
+                        <div class="alert-card-header">
+
+                            <div class="alert-card-title">
+
+                                <span class="severity-tag critical-tag">
+                                    CRITICAL
+                                </span>
+
+                                <span class="alert-time">
+                                    25 min ago
+                                </span>
+
+                                <h3>
+                                    Road Connectivity at Critical Risk
+                                </h3>
+                            </div>
+
+                            <div class="alert-warning-icon">
+                                ⚠
+                            </div>
+
+                        </div>
+
+                        <p class="alert-description">
+                            A vulnerable road segment may affect emergency
+                            access to nearby communities.
+                        </p>
+
+                        <div class="alert-meta">
+                            <span>📍 Road Segment R-42</span>
+                            <span>🏘 3 Villages Connected</span>
+                            <span>🚑 Hospital Access Affected</span>
+                        </div>
+
+                        <div class="recommended-action">
+                            <span>RECOMMENDED ACTION</span>
+                            <strong>Restrict Access & Verify Route</strong>
+                        </div>
+
+                        <div class="alert-card-footer">
+                            <a href="map.html" class="btn btn-primary">
+                                View on Map →
+                            </a>
+
+                            <button class="btn btn-outline">
+                                Acknowledge
+                            </button>
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+                <!-- RIGHT SIDEBAR -->
+                <aside class="alerts-sidebar">
+
+                    <div class="alerts-side-card emergency-card">
+
+                        <div class="side-icon">⚠</div>
+
+                        <h3>Emergency Guidance</h3>
+
+                        <p>
+                            If you are currently in an affected area,
+                            prioritise your safety and follow official
+                            emergency instructions.
+                        </p>
+
+                        <a href="reports.html" class="btn btn-primary full-width-btn">
+                            Report an Incident →
+                        </a>
+
+                    </div>
+
+
+                    <div class="alerts-side-card">
+
+                        <span class="section-label">
+                            SAFETY INFORMATION
+                        </span>
+
+                        <h3>During a Landslide Alert</h3>
+
+                        <ul class="safety-list">
+                            <li>Move away from unstable slopes.</li>
+                            <li>Avoid blocked or damaged roads.</li>
+                            <li>Follow official local authority guidance.</li>
+                            <li>Do not enter dangerous areas for photos.</li>
+                        </ul>
+
+                    </div>
+
+
+                    <div class="alerts-side-card alert-summary-card">
+
+                        <h3>Alert Summary</h3>
+
+                        <div class="summary-row">
+                            <span>Critical</span>
+                            <strong>2</strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>High Risk</span>
+                            <strong>3</strong>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>Moderate</span>
+                            <strong>3</strong>
+                        </div>
+
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+        <!-- =========================
+             MAIN ALERTS SECTION
+        ========================== -->
+        <section class="alerts-section section">
+
+            <div class="container">
+
+                <!-- Controls -->
+                <div class="alerts-toolbar">
+
+                    <div class="alerts-toolbar-left">
+
+                        <h2>Active Alerts</h2>
+
+                        <p>
+                            Prioritised using risk, exposure and
+                            infrastructure impact.
+                        </p>
+
+                    </div>
+
+
+                    <div class="alerts-controls">
+
+                        <!-- Filter -->
+                        <select
+                            id="alertFilter"
+                            class="alert-select"
+                            aria-label="Filter alerts by severity"
+                        >
+                            <option value="all">All Alerts</option>
+                            <option value="critical">Critical</option>
+                            <option value="high">High Risk</option>
+                            <option value="moderate">Moderate</option>
+                            <option value="low">Low Risk</option>
+                        </select>
+
+
+                        <!-- Refresh -->
+                        <button
+                            class="btn btn-outline alert-refresh-btn"
+                            id="refreshAlerts"
+                        >
+                            ↻ Refresh
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Critical Alert Banner -->
+                <div class="emergency-banner">
+
+                    <div class="emergency-icon">
+                        ⚠
+                    </div>
+
+                    <div class="emergency-content">
+
+                        <div class="emergency-title-row">
+                            <span class="severity-badge critical-badge">
+                                CRITICAL
+                            </span>
+
+                            <span class="alert-time">
+                                Updated 10 minutes ago
+                            </span>
+                        </div>
+
+                        <h3>
+                            Immediate Attention Required in High-Risk Zone
+                        </h3>
+
+                        <p>
+                            Heavy rainfall and terrain conditions indicate
+                            elevated landslide risk. Authorities are advised
+                            to verify the area and initiate precautionary action.
+                        </p>
+
+                        <div class="emergency-actions">
+
+                            <a href="map.html" class="btn btn-primary">
+                                View on Map →
+                            </a>
+
+                            <button
+                                class="btn btn-secondary acknowledge-btn"
+                            >
+                                Acknowledge
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Alert Grid -->
+                <div class="alerts-layout">
+
+                    <!-- LEFT : ALERT LIST -->
+                    <div class="alerts-list" id="alertsList">
+
+
+                        <!-- Alert 1 -->
+                        <article
+                            class="alert-card critical"
+                            data-severity="critical"
+                        >
+
+                            <div class="alert-status-column">
+                                <div class="alert-status-dot critical-dot"></div>
+                            </div>
+
+
+                            <div class="alert-card-content">
+
+                                <div class="alert-card-top">
+
+                                    <span class="severity-badge critical-badge">
+                                        CRITICAL
+                                    </span>
+
+                                    <span class="alert-time">
+                                        10 min ago
+                                    </span>
+
+                                </div>
+
+
+                                <h3>
+                                    Severe Landslide Risk Detected
+                                </h3>
+
+                                <p>
+                                    Extremely high rainfall and terrain risk
+                                    indicators detected in the monitored zone.
+                                </p>
+
+
+                                <div class="alert-meta">
+
+                                    <span>📍 Risk Zone A-17</span>
+
+                                    <span>👥 ~1,250 potentially exposed</span>
+
+                                    <span>🚧 2 roads at risk</span>
+
+                                </div>
+
+
+                                <div class="alert-card-footer">
+
+                                    <div class="recommended-action-text">
+
+                                        <small>
+                                            RECOMMENDED ACTION
+                                        </small>
+
+                                        <strong>
+                                            Alert & Field Verification
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div class="alert-card-buttons">
+
+                                        <a
+                                            href="map.html"
+                                            class="text-btn"
+                                        >
+                                            View Map →
+                                        </a>
+
+                                        <button
+                                            class="icon-btn acknowledge-btn"
+                                            title="Acknowledge Alert"
+                                        >
+                                            ✓
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- Alert 2 -->
+                        <article
+                            class="alert-card critical"
+                            data-severity="critical"
+                        >
+
+                            <div class="alert-status-column">
+                                <div class="alert-status-dot critical-dot"></div>
+                            </div>
+
+
+                            <div class="alert-card-content">
+
+                                <div class="alert-card-top">
+
+                                    <span class="severity-badge critical-badge">
+                                        CRITICAL
+                                    </span>
+
+                                    <span class="alert-time">
+                                        25 min ago
+                                    </span>
+
+                                </div>
+
+
+                                <h3>
+                                    Road Connectivity at Critical Risk
+                                </h3>
+
+                                <p>
+                                    A vulnerable road segment may affect
+                                    emergency access to nearby communities.
+                                </p>
+
+
+                                <div class="alert-meta">
+
+                                    <span>📍 Road Segment R-42</span>
+
+                                    <span>🏘 3 villages connected</span>
+
+                                    <span>🚑 Hospital access affected</span>
+
+                                </div>
+
+
+                                <div class="alert-card-footer">
+
+                                    <div class="recommended-action-text">
+
+                                        <small>
+                                            RECOMMENDED ACTION
+                                        </small>
+
+                                        <strong>
+                                            Restrict Access & Verify Route
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div class="alert-card-buttons">
+
+                                        <a
+                                            href="map.html"
+                                            class="text-btn"
+                                        >
+                                            View Map →
+                                        </a>
+
+                                        <button
+                                            class="icon-btn acknowledge-btn"
+                                            title="Acknowledge Alert"
+                                        >
+                                            ✓
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- Alert 3 -->
+                        <article
+                            class="alert-card high"
+                            data-severity="high"
+                        >
+
+                            <div class="alert-status-column">
+                                <div class="alert-status-dot high-dot"></div>
+                            </div>
+
+
+                            <div class="alert-card-content">
+
+                                <div class="alert-card-top">
+
+                                    <span class="severity-badge high-badge">
+                                        HIGH RISK
+                                    </span>
+
+                                    <span class="alert-time">
+                                        40 min ago
+                                    </span>
+
+                                </div>
+
+
+                                <h3>
+                                    Heavy Rainfall Increasing Slope Instability
+                                </h3>
+
+                                <p>
+                                    Continuous rainfall has increased
+                                    landslide susceptibility across
+                                    the monitored area.
+                                </p>
+
+
+                                <div class="alert-meta">
+
+                                    <span>📍 Zone B-08</span>
+
+                                    <span>🌧 Heavy Rainfall</span>
+
+                                    <span>📈 Risk Increasing</span>
+
+                                </div>
+
+
+                                <div class="alert-card-footer">
+
+                                    <div class="recommended-action-text">
+
+                                        <small>
+                                            RECOMMENDED ACTION
+                                        </small>
+
+                                        <strong>
+                                            Increase Monitoring
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div class="alert-card-buttons">
+
+                                        <a
+                                            href="map.html"
+                                            class="text-btn"
+                                        >
+                                            View Map →
+                                        </a>
+
+                                        <button
+                                            class="icon-btn acknowledge-btn"
+                                            title="Acknowledge Alert"
+                                        >
+                                            ✓
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- Alert 4 -->
+                        <article
+                            class="alert-card high"
+                            data-severity="high"
+                        >
+
+                            <div class="alert-status-column">
+                                <div class="alert-status-dot high-dot"></div>
+                            </div>
+
+
+                            <div class="alert-card-content">
+
+                                <div class="alert-card-top">
+
+                                    <span class="severity-badge high-badge">
+                                        HIGH RISK
+                                    </span>
+
+                                    <span class="alert-time">
+                                        1 hr ago
+                                    </span>
+
+                                </div>
+
+
+                                <h3>
+                                    Citizen Report Requires Verification
+                                </h3>
+
+                                <p>
+                                    A ground-level report indicates possible
+                                    slope movement and debris near a road.
+                                </p>
+
+
+                                <div class="alert-meta">
+
+                                    <span>📍 Citizen Report #GR-1042</span>
+
+                                    <span>📷 Photo Submitted</span>
+
+                                    <span>🚧 Road Nearby</span>
+
+                                </div>
+
+
+                                <div class="alert-card-footer">
+
+                                    <div class="recommended-action-text">
+
+                                        <small>
+                                            RECOMMENDED ACTION
+                                        </small>
+
+                                        <strong>
+                                            Dispatch Field Team
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div class="alert-card-buttons">
+
+                                        <a
+                                            href="reports.html"
+                                            class="text-btn"
+                                        >
+                                            View Report →
+                                        </a>
+
+                                        <button
+                                            class="icon-btn acknowledge-btn"
+                                            title="Acknowledge Alert"
+                                        >
+                                            ✓
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- Alert 5 -->
+                        <article
+                            class="alert-card moderate"
+                            data-severity="moderate"
+                        >
+
+                            <div class="alert-status-column">
+                                <div class="alert-status-dot moderate-dot"></div>
+                            </div>
+
+
+                            <div class="alert-card-content">
+
+                                <div class="alert-card-top">
+
+                                    <span class="severity-badge moderate-badge">
+                                        MODERATE
+                                    </span>
+
+                                    <span class="alert-time">
+                                        2 hr ago
+                                    </span>
+
+                                </div>
+
+
+                                <h3>
+                                    Elevated Landslide Susceptibility
+                                </h3>
+
+                                <p>
+                                    Current environmental conditions indicate
+                                    moderate landslide susceptibility.
+                                </p>
+
+
+                                <div class="alert-meta">
+
+                                    <span>📍 Zone C-21</span>
+
+                                    <span>📊 Risk Score: 58%</span>
+
+                                    <span>👁 Monitoring Active</span>
+
+                                </div>
+
+
+                                <div class="alert-card-footer">
+
+                                    <div class="recommended-action-text">
+
+                                        <small>
+                                            RECOMMENDED ACTION
+                                        </small>
+
+                                        <strong>
+                                            Continue Monitoring
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div class="alert-card-buttons">
+
+                                        <a
+                                            href="map.html"
+                                            class="text-btn"
+                                        >
+                                            View Map →
+                                        </a>
+
+                                        <button
+                                            class="icon-btn acknowledge-btn"
+                                            title="Acknowledge Alert"
+                                        >
+                                            ✓
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+
+                        <!-- Empty State -->
+                        <div
+                            class="no-alerts"
+                            id="noAlerts"
+                            style="display: none;"
+                        >
+                            <div class="no-alert-icon">✓</div>
+
+                            <h3>No Alerts Found</h3>
+
+                            <p>
+                                There are no active alerts matching
+                                the selected filter.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <!-- RIGHT : ALERT INFORMATION PANEL -->
+                    <aside class="alerts-sidebar">
+
+
+                        <!-- Priority Guide -->
+                        <div class="sidebar-card">
+
+                            <div class="sidebar-card-header">
+                                <h3>Priority Guide</h3>
+                            </div>
+
+
+                            <div class="priority-guide">
+
+                                <div class="priority-item">
+
+                                    <span class="priority-color critical-color"></span>
+
+                                    <div>
+                                        <strong>Critical</strong>
+                                        <small>
+                                            Immediate action required
+                                        </small>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="priority-item">
+
+                                    <span class="priority-color high-color"></span>
+
+                                    <div>
+                                        <strong>High Risk</strong>
+                                        <small>
+                                            Urgent verification required
+                                        </small>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="priority-item">
+
+                                    <span class="priority-color moderate-color"></span>
+
+                                    <div>
+                                        <strong>Moderate</strong>
+                                        <small>
+                                            Enhanced monitoring
+                                        </small>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="priority-item">
+
+                                    <span class="priority-color low-color"></span>
+
+                                    <div>
+                                        <strong>Low</strong>
+                                        <small>
+                                            Routine monitoring
+                                        </small>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- System Status -->
+                        <div class="sidebar-card system-status-card">
+
+                            <div class="sidebar-card-header">
+
+                                <h3>System Status</h3>
+
+                                <span class="system-live">
+                                    <i></i> LIVE
+                                </span>
+
+                            </div>
+
+
+                            <div class="system-status-list">
+
+                                <div class="system-status-item">
+
+                                    <span>Data Integration</span>
+
+                                    <strong class="status-online">
+                                        ● Active
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="system-status-item">
+
+                                    <span>Risk Engine</span>
+
+                                    <strong class="status-online">
+                                        ● Active
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="system-status-item">
+
+                                    <span>Impact Analysis</span>
+
+                                    <strong class="status-online">
+                                        ● Active
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="system-status-item">
+
+                                    <span>Last Updated</span>
+
+                                    <strong id="lastUpdated">
+                                        Just now
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Safety Information -->
+                        <div class="sidebar-card safety-card">
+
+                            <div class="sidebar-card-header">
+                                <h3>Safety Reminder</h3>
+                            </div>
+
+                            <p>
+                                Avoid travelling through vulnerable
+                                slopes and follow official instructions
+                                during active high-risk alerts.
+                            </p>
+
+                            <a href="index.html#how-it-works" class="text-btn">
+                                Learn More →
+                            </a>
+
+                        </div>
+
+                    </aside>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+    <footer class="footer">
+
+        <div class="container footer-container">
+
+            <div class="footer-brand">
+
+                <a href="index.html" class="logo">
+
+                    <div class="logo-icon">
+    <img src="assets/images/logo.png" alt="GeoRakshak Logo">
+</div>
+
+                    <div class="logo-text">
+                        <span class="logo-name">GeoRakshak</span>
+
+                        <span class="logo-tagline">
+                            Landslide Intelligence Platform
+                        </span>
+                    </div>
+
+                </a>
+
+                <p>
+                    AI-powered multi-source intelligence for
+                    last-mile landslide risk awareness and
+                    decision support.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <div>
+
+                    <h4>Platform</h4>
+
+                    <a href="index.html">Home</a>
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="map.html">Risk Map</a>
+
+                </div>
+
+
+                <div>
+
+                    <h4>Services</h4>
+
+                    <a href="reports.html">Citizen Reports</a>
+                    <a href="alerts.html">Alerts</a>
+                    <a href="index.html#how-it-works">
+                        How It Works
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="container footer-bottom">
+
+            <p>
+                © 2026 GeoRakshak. AI-Powered Landslide Intelligence Platform.
+            </p>
+
+            <p>
+                Predict Risk. Understand Impact. Act in Time.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- Shared JavaScript -->
+    <script src="js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Report landslides, road blockages, slope hazards and other incidents to GeoRakshak."
+    >
+
+    <title>Report Incident | GeoRakshak</title>
+
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         NAVBAR
+    ========================================== -->
+
+    <header class="navbar">
+
+        <div class="container nav-container">
+
+
+            <!-- Logo -->
+
+            <a href="index.html" class="logo">
+
+                <div class="logo-icon">
+                    <img src="assets/images/logo.png" alt="GeoRakshak Logo">
+                </div>
+
+
+                <div class="logo-text">
+
+                    <span class="logo-name">
+                        GeoRakshak
+                    </span>
+
+                    <span class="logo-tagline">
+                        Landslide Intelligence
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <!-- Navigation -->
+
+            <nav class="nav-links" id="navLinks">
+
+                <a
+                    href="index.html"
+                    class="nav-link"
+                >
+                    Home
+                </a>
+
+
+                <a
+                    href="dashboard.html"
+                    class="nav-link"
+                >
+                    Dashboard
+                </a>
+
+
+                <a
+                    href="map.html"
+                    class="nav-link"
+                >
+                    Risk Map
+                </a>
+
+
+                <a
+                    href="reports.html"
+                    class="nav-link active"
+                >
+                    Reports
+                </a>
+
+
+                <a
+                    href="alerts.html"
+                    class="nav-link"
+                >
+                    Alerts
+                </a>
+
+            </nav>
+
+
+            <!-- Actions -->
+
+            <div class="nav-actions">
+
+                <a
+                    href="#submit-report"
+                    class="btn btn-primary"
+                >
+                    Report Incident →
+                </a>
+
+
+                <button
+                    class="menu-toggle"
+                    id="menuToggle"
+                    aria-label="Toggle navigation menu"
+                >
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </header>
+
+
+
+    <main>
+
+
+        <!-- =========================================
+             PAGE HERO
+        ========================================== -->
+
+        <section class="reports-page-header">
+
+            <div class="container">
+
+
+                <!-- Breadcrumb -->
+
+                <div class="breadcrumb">
+
+                    <a href="index.html">
+                        Home
+                    </a>
+
+                    <span>›</span>
+
+                    <span>
+                        Ground Reports
+                    </span>
+
+                </div>
+
+
+                <!-- Header -->
+
+                <div class="reports-header-content">
+
+
+                    <div class="reports-header-text">
+
+                        <span class="section-label">
+                            LAST-MILE SITUATIONAL INTELLIGENCE
+                        </span>
+
+
+                        <h1>
+                            Report What You
+                            <span>See on the Ground.</span>
+                        </h1>
+
+
+                        <p>
+                            Citizens and field teams can report landslides,
+                            road blockages, cracks, debris and other potential
+                            hazards to strengthen real-time situational awareness.
+                        </p>
+
+
+                        <div class="reports-hero-points">
+
+                            <span>
+                                ✓ Ground-level intelligence
+                            </span>
+
+                            <span>
+                                ✓ Supports verification
+                            </span>
+
+                            <span>
+                                ✓ Improves emergency response
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Stats -->
+
+                    <div class="reports-header-stats">
+
+
+                        <div class="report-header-stat">
+
+                            <strong id="pendingReportsCount">
+                                12
+                            </strong>
+
+                            <span>
+                                Reports Pending Review
+                            </span>
+
+                        </div>
+
+
+                        <div class="report-header-stat">
+
+                            <strong id="verifiedReportsCount">
+                                38
+                            </strong>
+
+                            <span>
+                                Verified Reports
+                            </span>
+
+                        </div>
+
+
+                        <div class="report-header-stat">
+
+                            <strong>
+                                24/7
+                            </strong>
+
+                            <span>
+                                Ground Intelligence
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             MAIN REPORT SECTION
+        ========================================== -->
+
+        <section class="reports-section" id="submit-report">
+
+            <div class="container">
+
+
+                <div class="reports-main-grid">
+
+
+                    <!-- =====================================
+                         REPORT FORM CARD
+                    ====================================== -->
+
+                    <section class="report-form-card">
+
+
+                        <!-- Form Header -->
+
+                        <div class="report-form-header">
+
+                            <span class="section-label">
+                                SUBMIT A REPORT
+                            </span>
+
+
+                            <h2>
+                                Report an Incident
+                            </h2>
+
+
+                            <p>
+                                Provide as much accurate information as possible.
+                                Reports may be reviewed before being used for
+                                operational decisions.
+                            </p>
+
+                        </div>
+
+
+
+                        <!-- =====================================
+                             FORM
+                        ====================================== -->
+
+                        <form id="reportForm">
+
+
+                            <!-- Incident Type -->
+
+                            <div class="form-group">
+
+                                <label for="incidentType">
+
+                                    What are you reporting?
+
+                                    <span>*</span>
+
+                                </label>
+
+
+                                <select
+                                    id="incidentType"
+                                    name="type"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select incident type
+                                    </option>
+
+                                    <option value="Landslide / Slope Failure">
+                                        Landslide / Slope Failure
+                                    </option>
+
+                                    <option value="Road Blockage">
+                                        Road Blockage
+                                    </option>
+
+                                    <option value="Visible Slope Crack">
+                                        Visible Slope Crack
+                                    </option>
+
+                                    <option value="Rockfall / Falling Rocks">
+                                        Rockfall / Falling Rocks
+                                    </option>
+
+                                    <option value="Debris Accumulation">
+                                        Debris Accumulation
+                                    </option>
+
+                                    <option value="Other Potential Hazard">
+                                        Other Potential Hazard
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+
+                            <!-- Severity -->
+
+                            <div class="form-group">
+
+                                <label>
+
+                                    Observed Severity
+
+                                    <span>*</span>
+
+                                </label>
+
+
+                                <div class="severity-options">
+
+
+                                    <!-- Low -->
+
+                                    <label class="severity-option">
+
+                                        <input
+                                            type="radio"
+                                            name="severity"
+                                            value="low"
+                                            required
+                                        >
+
+
+                                        <span class="severity-option-content">
+
+                                            <span
+                                                class="
+                                                    severity-radio-dot
+                                                    low-dot
+                                                "
+                                            ></span>
+
+
+                                            <span>
+
+                                                <strong>
+                                                    Low
+                                                </strong>
+
+                                                <small>
+                                                    Minor concern
+                                                </small>
+
+                                            </span>
+
+                                        </span>
+
+                                    </label>
+
+
+
+                                    <!-- Moderate -->
+
+                                    <label class="severity-option">
+
+                                        <input
+                                            type="radio"
+                                            name="severity"
+                                            value="moderate"
+                                        >
+
+
+                                        <span class="severity-option-content">
+
+                                            <span
+                                                class="
+                                                    severity-radio-dot
+                                                    moderate-dot
+                                                "
+                                            ></span>
+
+
+                                            <span>
+
+                                                <strong>
+                                                    Moderate
+                                                </strong>
+
+                                                <small>
+                                                    Needs attention
+                                                </small>
+
+                                            </span>
+
+                                        </span>
+
+                                    </label>
+
+
+
+                                    <!-- High -->
+
+                                    <label class="severity-option">
+
+                                        <input
+                                            type="radio"
+                                            name="severity"
+                                            value="high"
+                                        >
+
+
+                                        <span class="severity-option-content">
+
+                                            <span
+                                                class="
+                                                    severity-radio-dot
+                                                    high-dot
+                                                "
+                                            ></span>
+
+
+                                            <span>
+
+                                                <strong>
+                                                    High
+                                                </strong>
+
+                                                <small>
+                                                    Immediate concern
+                                                </small>
+
+                                            </span>
+
+                                        </span>
+
+                                    </label>
+
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- Description -->
+
+                            <div class="form-group">
+
+                                <label for="reportDescription">
+
+                                    Describe What You Observed
+
+                                    <span>*</span>
+
+                                </label>
+
+
+                                <textarea
+                                    id="reportDescription"
+                                    name="description"
+                                    rows="6"
+                                    required
+                                    placeholder="Example: Large rocks and debris have fallen onto the road. The road is partially blocked and vehicles are having difficulty passing."
+                                ></textarea>
+
+
+                                <small class="form-help">
+
+                                    Include useful details such as road
+                                    conditions, slope movement, cracks,
+                                    debris or immediate danger.
+
+                                </small>
+
+                            </div>
+
+
+
+                            <!-- =====================================
+                                 LOCATION
+                            ====================================== -->
+
+                            <div class="form-section-divider">
+
+                                <span>
+                                    LOCATION INFORMATION
+                                </span>
+
+                            </div>
+
+
+                            <div class="location-form-grid">
+
+
+                                <!-- Location -->
+
+                                <div class="form-group">
+
+                                    <label for="locationName">
+
+                                        Location / Nearby Landmark
+
+                                        <span>*</span>
+
+                                    </label>
+
+
+                                    <input
+                                        type="text"
+                                        id="locationName"
+                                        name="location"
+                                        placeholder="Enter village, road or landmark"
+                                        required
+                                    >
+
+                                </div>
+
+
+
+                                <!-- Location Type -->
+
+                                <div class="form-group">
+
+                                    <label for="locationType">
+                                        Location Type
+                                    </label>
+
+
+                                    <select
+                                        id="locationType"
+                                        name="locationType"
+                                    >
+
+                                        <option value="Road / Highway">
+                                            Road / Highway
+                                        </option>
+
+                                        <option value="Village / Community">
+                                            Village / Community
+                                        </option>
+
+                                        <option value="Mountain / Slope">
+                                            Mountain / Slope
+                                        </option>
+
+                                        <option value="Other">
+                                            Other
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <!-- GPS -->
+
+                            <div class="coordinates-section">
+
+
+                                <div class="coordinates-header">
+
+
+                                    <div>
+
+                                        <h3>
+                                            GPS Location
+                                        </h3>
+
+                                        <p>
+                                            Add your location for more
+                                            accurate incident mapping.
+                                        </p>
+
+                                    </div>
+
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-outline"
+                                        id="getLocationBtn"
+                                    >
+                                        ⌖ Use Current Location
+                                    </button>
+
+
+                                </div>
+
+
+                                <div class="coordinates-grid">
+
+
+                                    <!-- Latitude -->
+
+                                    <div class="form-group">
+
+                                        <label for="latitude">
+                                            Latitude
+                                        </label>
+
+
+                                        <input
+                                            type="number"
+                                            step="any"
+                                            id="latitude"
+                                            name="latitude"
+                                            placeholder="e.g. 30.3165"
+                                        >
+
+                                    </div>
+
+
+
+                                    <!-- Longitude -->
+
+                                    <div class="form-group">
+
+                                        <label for="longitude">
+                                            Longitude
+                                        </label>
+
+
+                                        <input
+                                            type="number"
+                                            step="any"
+                                            id="longitude"
+                                            name="longitude"
+                                            placeholder="e.g. 78.0322"
+                                        >
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <!-- =====================================
+                                 PHOTO EVIDENCE
+                            ====================================== -->
+
+                            <div class="form-section-divider">
+
+                                <span>
+                                    SUPPORTING EVIDENCE
+                                </span>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+
+                                <label for="incidentPhotos">
+                                    Upload Photos
+                                </label>
+
+
+                                <div
+                                    class="file-upload-area"
+                                    id="fileUploadArea"
+                                >
+
+
+                                    <input
+                                        type="file"
+                                        id="incidentPhotos"
+                                        name="photos"
+                                        accept="image/jpeg,image/png,image/webp"
+                                        multiple
+                                    >
+
+
+                                    <div class="file-upload-content">
+
+
+                                        <div class="upload-icon">
+                                            📷
+                                        </div>
+
+
+                                        <h3>
+                                            Upload Photos of the Incident
+                                        </h3>
+
+
+                                        <p>
+                                            Drag and drop images here
+                                            or click to browse
+                                        </p>
+
+
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline"
+                                            id="browseFilesBtn"
+                                        >
+                                            Choose Photos
+                                        </button>
+
+
+                                        <small>
+                                            JPG, PNG or WEBP · Maximum 5 files
+                                        </small>
+
+
+                                    </div>
+
+
+                                </div>
+
+
+                                <!-- Image Previews -->
+
+                                <div
+                                    class="image-preview-grid"
+                                    id="imagePreviewGrid"
+                                ></div>
+
+
+                            </div>
+
+
+
+                            <!-- =====================================
+                                 REPORTER INFORMATION
+                            ====================================== -->
+
+                            <div class="form-section-divider">
+
+                                <span>
+                                    REPORTER INFORMATION
+                                </span>
+
+                            </div>
+
+
+                            <div class="reporter-form-grid">
+
+
+                                <!-- Name -->
+
+                                <div class="form-group">
+
+                                    <label for="reporterName">
+                                        Your Name
+                                    </label>
+
+
+                                    <input
+                                        type="text"
+                                        id="reporterName"
+                                        name="reporterName"
+                                        placeholder="Optional"
+                                    >
+
+                                </div>
+
+
+
+                                <!-- Role -->
+
+                                <div class="form-group">
+
+                                    <label for="reporterRole">
+                                        You are reporting as
+                                    </label>
+
+
+                                    <select
+                                        id="reporterRole"
+                                        name="reporterRole"
+                                    >
+
+                                        <option value="Citizen">
+                                            Citizen
+                                        </option>
+
+                                        <option value="Field Team Member">
+                                            Field Team Member
+                                        </option>
+
+                                        <option value="Volunteer">
+                                            Volunteer
+                                        </option>
+
+                                        <option value="Other">
+                                            Other
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <!-- Consent -->
+
+                            <label class="consent-checkbox">
+
+                                <input
+                                    type="checkbox"
+                                    id="reportConsent"
+                                    required
+                                >
+
+
+                                <span>
+
+                                    I confirm that the information provided
+                                    is accurate to the best of my knowledge.
+
+                                </span>
+
+                            </label>
+
+
+
+                            <!-- Submit -->
+
+                            <button
+                                type="submit"
+                                class="
+                                    btn
+                                    btn-primary
+                                    report-submit-btn
+                                "
+                            >
+                                Submit Incident Report →
+                            </button>
+
+
+
+                            <!-- Form Message -->
+
+                            <div
+                                class="form-message"
+                                id="reportFormMessage"
+                                role="alert"
+                            ></div>
+
+
+                        </form>
+
+
+                    </section>
+
+
+
+                    <!-- =====================================
+                         SIDEBAR
+                    ====================================== -->
+
+                    <aside class="reports-sidebar">
+
+
+                        <!-- How Report Helps -->
+
+                        <div class="sidebar-card report-help-card">
+
+
+                            <div class="sidebar-card-header">
+
+                                <h3>
+                                    How Your Report Helps
+                                </h3>
+
+                            </div>
+
+
+                            <div class="report-help-list">
+
+
+                                <div class="report-help-item">
+
+                                    <span>01</span>
+
+
+                                    <div>
+
+                                        <strong>
+                                            Adds Ground Intelligence
+                                        </strong>
+
+                                        <p>
+                                            Provides information that remote
+                                            data may not capture.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="report-help-item">
+
+                                    <span>02</span>
+
+
+                                    <div>
+
+                                        <strong>
+                                            Supports Verification
+                                        </strong>
+
+                                        <p>
+                                            Helps authorities identify locations
+                                            requiring review.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="report-help-item">
+
+                                    <span>03</span>
+
+
+                                    <div>
+
+                                        <strong>
+                                            Improves Situation Awareness
+                                        </strong>
+
+                                        <p>
+                                            Strengthens the overall risk and
+                                            impact picture.
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- Emergency Notice -->
+
+                        <div class="sidebar-card emergency-notice">
+
+
+                            <div class="emergency-notice-icon">
+                                ⚠
+                            </div>
+
+
+                            <h3>
+                                Immediate Danger?
+                            </h3>
+
+
+                            <p>
+                                If there is an immediate threat to life,
+                                do not wait for a report to be reviewed.
+                                Move to a safer location and follow official
+                                emergency procedures.
+                            </p>
+
+
+                            <a
+                                href="alerts.html"
+                                class="
+                                    btn
+                                    btn-outline
+                                    full-width-btn
+                                "
+                            >
+                                View Active Alerts
+                            </a>
+
+
+                        </div>
+
+
+
+                        <!-- Reporting Tips -->
+
+                        <div class="sidebar-card">
+
+
+                            <div class="sidebar-card-header">
+
+                                <h3>
+                                    Reporting Tips
+                                </h3>
+
+                            </div>
+
+
+                            <ul class="reporting-tips">
+
+                                <li>
+                                    Provide the most accurate location possible.
+                                </li>
+
+                                <li>
+                                    Describe what you actually observe.
+                                </li>
+
+                                <li>
+                                    Add photos only when it is safe to do so.
+                                </li>
+
+                                <li>
+                                    Do not enter dangerous areas to collect evidence.
+                                </li>
+
+                            </ul>
+
+
+                        </div>
+
+
+
+                        <!-- Recent Activity -->
+
+                        <div class="sidebar-card recent-status-card">
+
+
+                            <div class="sidebar-card-header">
+
+                                <h3>
+                                    Recent Activity
+                                </h3>
+
+
+                                <a
+                                    href="dashboard.html"
+                                    class="text-btn"
+                                >
+                                    Dashboard →
+                                </a>
+
+                            </div>
+
+
+                            <div class="report-status-summary">
+
+
+                                <div>
+
+                                    <span class="status-count pending-count">
+                                        12
+                                    </span>
+
+                                    <span>
+                                        Pending Review
+                                    </span>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span class="status-count verify-count">
+                                        5
+                                    </span>
+
+                                    <span>
+                                        Field Verification
+                                    </span>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span class="status-count verified-count">
+                                        38
+                                    </span>
+
+                                    <span>
+                                        Verified
+                                    </span>
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </aside>
+
+
+                </div>
+
+
+
+                <!-- =========================================
+                     RECENT PUBLIC REPORTS
+                ========================================== -->
+
+                <section class="public-reports-section">
+
+
+                    <div class="section-heading">
+
+
+                        <span class="section-label">
+                            GROUND INTELLIGENCE
+                        </span>
+
+
+                        <h2>
+                            Recent <span>Reports</span>
+                        </h2>
+
+
+                        <p>
+                            Recent incident reports received by
+                            the GeoRakshak platform.
+                        </p>
+
+
+                    </div>
+
+
+
+                    <div class="public-reports-grid">
+
+
+                        <!-- Report 1 -->
+
+                        <article class="public-report-card">
+
+
+                            <div class="public-report-top">
+
+                                <span class="report-category">
+                                    ROAD BLOCKAGE
+                                </span>
+
+
+                                <span class="report-status verify-status">
+                                    Verifying
+                                </span>
+
+                            </div>
+
+
+                            <h3>
+                                Possible Debris on Road
+                            </h3>
+
+
+                            <p>
+                                Large rocks and debris reported near
+                                a monitored road segment.
+                            </p>
+
+
+                            <div class="public-report-meta">
+
+                                <span>
+                                    📍 Road Segment R-42
+                                </span>
+
+                                <span>
+                                    🕒 1 hour ago
+                                </span>
+
+                            </div>
+
+
+                            <a
+                                href="map.html"
+                                class="text-btn"
+                            >
+                                View Area →
+                            </a>
+
+
+                        </article>
+
+
+
+                        <!-- Report 2 -->
+
+                        <article class="public-report-card">
+
+
+                            <div class="public-report-top">
+
+                                <span class="report-category">
+                                    SLOPE CRACK
+                                </span>
+
+
+                                <span class="report-status review-status">
+                                    Under Review
+                                </span>
+
+                            </div>
+
+
+                            <h3>
+                                New Crack Observed on Slope
+                            </h3>
+
+
+                            <p>
+                                Ground observation submitted from an
+                                elevated-risk location.
+                            </p>
+
+
+                            <div class="public-report-meta">
+
+                                <span>
+                                    📍 Zone B-08
+                                </span>
+
+                                <span>
+                                    🕒 2 hours ago
+                                </span>
+
+                            </div>
+
+
+                            <a
+                                href="map.html"
+                                class="text-btn"
+                            >
+                                View Area →
+                            </a>
+
+
+                        </article>
+
+
+
+                        <!-- Report 3 -->
+
+                        <article class="public-report-card">
+
+
+                            <div class="public-report-top">
+
+                                <span class="report-category">
+                                    ROCKFALL
+                                </span>
+
+
+                                <span class="report-status monitoring-status">
+                                    Monitoring
+                                </span>
+
+                            </div>
+
+
+                            <h3>
+                                Minor Rockfall Activity
+                            </h3>
+
+
+                            <p>
+                                Small rocks observed near the roadside
+                                following continued rainfall.
+                            </p>
+
+
+                            <div class="public-report-meta">
+
+                                <span>
+                                    📍 Zone C-21
+                                </span>
+
+                                <span>
+                                    🕒 3 hours ago
+                                </span>
+
+                            </div>
+
+
+                            <a
+                                href="map.html"
+                                class="text-btn"
+                            >
+                                View Area →
+                            </a>
+
+
+                        </article>
+
+
+                    </div>
+
+
+                </section>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer class="footer">
+
+
+        <div class="container footer-container">
+
+
+            <!-- Brand -->
+
+            <div class="footer-brand">
+
+
+                <a
+                    href="index.html"
+                    class="logo"
+                >
+
+
+                    <div class="logo-icon">
+    <img src="assets/images/logo.png" alt="GeoRakshak Logo">
+</div>
+
+                    <div class="logo-text">
+
+                        <span class="logo-name">
+                            GeoRakshak
+                        </span>
+
+                        <span class="logo-tagline">
+                            Landslide Intelligence Platform
+                        </span>
+
+                    </div>
+
+
+                </a>
+
+
+                <p>
+                    AI-powered multi-source intelligence for
+                    last-mile landslide risk awareness and
+                    decision support.
+                </p>
+
+
+            </div>
+
+
+
+            <!-- Links -->
+
+            <div class="footer-links">
+
+
+                <div>
+
+                    <h4>
+                        Platform
+                    </h4>
+
+                    <a href="index.html">
+                        Home
+                    </a>
+
+                    <a href="dashboard.html">
+                        Dashboard
+                    </a>
+
+                    <a href="map.html">
+                        Risk Map
+                    </a>
+
+                </div>
+
+
+
+                <div>
+
+                    <h4>
+                        Services
+                    </h4>
+
+                    <a href="reports.html">
+                        Ground Reports
+                    </a>
+
+                    <a href="alerts.html">
+                        Alerts
+                    </a>
+
+                    <a href="dashboard.html#faq">
+                        FAQs
+                    </a>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- Footer Bottom -->
+
+        <div class="container footer-bottom">
+
+
+            <p>
+                © 2026 GeoRakshak. AI-Powered Landslide Intelligence Platform.
+            </p>
+
+
+            <p>
+                Predict Risk. Understand Impact. Act in Time.
+            </p>
+
+
+        </div>
+
+
+    </footer>
+
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script src="js/main.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/reports.js"></script>
+
+
+</body>
+
+</html>

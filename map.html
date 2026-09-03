@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="GeoRakshak interactive landslide risk map with risk zones, roads, population exposure and critical infrastructure">
+
+    <title>Risk Map | GeoRakshak</title>
+
+    <!-- Shared CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <!-- Leaflet CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVBAR
+    ========================== -->
+    <header class="navbar">
+        <div class="container nav-container">
+
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+    <img src="assets/images/logo.png" alt="GeoRakshak Logo">
+</div>
+
+                <div class="logo-text">
+                    <span class="logo-name">GeoRakshak</span>
+                    <span class="logo-tagline">Landslide Intelligence</span>
+                </div>
+            </a>
+
+
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="map.html" class="nav-link active">Risk Map</a>
+                <a href="reports.html" class="nav-link">Reports</a>
+                <a href="alerts.html" class="nav-link">Alerts</a>
+            </nav>
+
+
+            <div class="nav-actions">
+
+                <a href="reports.html" class="btn btn-primary">
+                    Report Incident
+                </a>
+
+                <button
+                    class="menu-toggle"
+                    id="menuToggle"
+                    aria-label="Toggle navigation menu"
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+
+            </div>
+
+        </div>
+    </header>
+
+
+    <main>
+
+        <!-- =========================
+             MAP PAGE HEADER
+        ========================== -->
+        <section class="map-page-header">
+
+            <div class="container">
+
+                <div class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span>›</span>
+                    <span>Risk Map</span>
+                </div>
+
+
+                <div class="map-header-content">
+
+                    <div>
+
+                        <span class="section-label">
+                            GIS INTELLIGENCE LAYER
+                        </span>
+
+                        <h1>
+                            Interactive <span>Risk Map</span>
+                        </h1>
+
+                        <p>
+                            Visualise landslide risk, affected infrastructure,
+                            population exposure, road connectivity and
+                            ground-level reports in one integrated view.
+                        </p>
+
+                    </div>
+
+
+                    <div class="map-header-status">
+
+                        <div class="dashboard-live-status">
+                            <span class="status-dot"></span>
+                            Live Data Layer
+                        </div>
+
+                        <small>
+                            Last updated: <span id="mapLastUpdated">
+                                Just now
+                            </span>
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             MAP SECTION
+        ========================== -->
+        <section class="risk-map-section">
+
+            <div class="container">
+
+
+                <!-- Map Controls -->
+                <div class="map-toolbar">
+
+                    <div class="map-search-container">
+
+                        <input
+                            type="text"
+                            id="locationSearch"
+                            placeholder="Search location, zone or road..."
+                            aria-label="Search location"
+                        >
+
+                        <button
+                            id="locationSearchBtn"
+                            class="map-search-btn"
+                            aria-label="Search"
+                        >
+                            🔍
+                        </button>
+
+                    </div>
+
+
+                    <div class="map-toolbar-actions">
+
+                        <select
+                            id="districtSelect"
+                            class="dashboard-select"
+                        >
+                            <option value="all">
+                                All Monitored Areas
+                            </option>
+
+                            <option value="district-a">
+                                District Area A
+                            </option>
+
+                            <option value="district-b">
+                                District Area B
+                            </option>
+                        </select>
+
+
+                        <button
+                            class="btn btn-outline"
+                            id="mapRefreshBtn"
+                        >
+                            ↻ Refresh
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Main Map Layout -->
+                <div class="map-layout">
+
+
+                    <!-- =========================
+                         MAP SIDE PANEL
+                    ========================== -->
+                    <aside class="map-sidebar">
+
+
+                        <!-- Risk Summary -->
+                        <div class="map-panel">
+
+                            <div class="map-panel-header">
+                                <h3>Risk Overview</h3>
+
+                                <span class="system-live">
+                                    <i></i> LIVE
+                                </span>
+                            </div>
+
+
+                            <div class="map-risk-summary">
+
+                                <button
+                                    class="map-risk-item risk-critical-item active"
+                                    data-risk="critical"
+                                >
+
+                                    <span class="map-risk-color critical-color"></span>
+
+                                    <div>
+                                        <strong>2</strong>
+                                        <small>Critical</small>
+                                    </div>
+
+                                    <span class="risk-eye">◉</span>
+
+                                </button>
+
+
+                                <button
+                                    class="map-risk-item risk-high-item active"
+                                    data-risk="high"
+                                >
+
+                                    <span class="map-risk-color high-color"></span>
+
+                                    <div>
+                                        <strong>3</strong>
+                                        <small>High Risk</small>
+                                    </div>
+
+                                    <span class="risk-eye">◉</span>
+
+                                </button>
+
+
+                                <button
+                                    class="map-risk-item risk-moderate-item active"
+                                    data-risk="moderate"
+                                >
+
+                                    <span class="map-risk-color moderate-color"></span>
+
+                                    <div>
+                                        <strong>3</strong>
+                                        <small>Moderate</small>
+                                    </div>
+
+                                    <span class="risk-eye">◉</span>
+
+                                </button>
+
+
+                                <button
+                                    class="map-risk-item risk-low-item active"
+                                    data-risk="low"
+                                >
+
+                                    <span class="map-risk-color low-color"></span>
+
+                                    <div>
+                                        <strong>12</strong>
+                                        <small>Low Risk</small>
+                                    </div>
+
+                                    <span class="risk-eye">◉</span>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Map Layers -->
+                        <div class="map-panel">
+
+                            <div class="map-panel-header">
+                                <h3>Map Layers</h3>
+                            </div>
+
+
+                            <div class="layer-list">
+
+                                <label class="layer-item">
+
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            class="layer-toggle"
+                                            id="riskZonesLayer"
+                                            checked
+                                        >
+
+                                        <span>Risk Zones</span>
+                                    </div>
+
+                                    <span class="layer-symbol zone-symbol"></span>
+
+                                </label>
+
+
+                                <label class="layer-item">
+
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            class="layer-toggle"
+                                            id="roadsLayer"
+                                            checked
+                                        >
+
+                                        <span>Road Network</span>
+                                    </div>
+
+                                    <span class="layer-symbol road-symbol"></span>
+
+                                </label>
+
+
+                                <label class="layer-item">
+
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            class="layer-toggle"
+                                            id="populationLayer"
+                                            checked
+                                        >
+
+                                        <span>Population Exposure</span>
+                                    </div>
+
+                                    <span class="layer-symbol population-symbol">
+                                        👥
+                                    </span>
+
+                                </label>
+
+
+                                <label class="layer-item">
+
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            class="layer-toggle"
+                                            id="infrastructureLayer"
+                                            checked
+                                        >
+
+                                        <span>Infrastructure</span>
+                                    </div>
+
+                                    <span class="layer-symbol infrastructure-symbol">
+                                        +
+                                    </span>
+
+                                </label>
+
+
+                                <label class="layer-item">
+
+                                    <div>
+                                        <input
+                                            type="checkbox"
+                                            class="layer-toggle"
+                                            id="reportsLayer"
+                                            checked
+                                        >
+
+                                        <span>Ground Reports</span>
+                                    </div>
+
+                                    <span class="layer-symbol report-symbol">
+                                        ⚑
+                                    </span>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Selected Zone -->
+                        <div
+                            class="map-panel selected-zone-panel"
+                            id="selectedZonePanel"
+                        >
+
+                            <div class="map-panel-header">
+
+                                <h3>Selected Location</h3>
+
+                                <span
+                                    class="severity-badge critical-badge"
+                                    id="selectedZoneSeverity"
+                                >
+                                    CRITICAL
+                                </span>
+
+                            </div>
+
+
+                            <div class="selected-zone-content">
+
+                                <h2 id="selectedZoneName">
+                                    Zone A-17
+                                </h2>
+
+                                <p id="selectedZoneLocation">
+                                    Monitored high-risk region
+                                </p>
+
+
+                                <div class="selected-zone-score">
+
+                                    <span>Risk Score</span>
+
+                                    <strong id="selectedZoneRisk">
+                                        82%
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="selected-zone-progress">
+
+                                    <div
+                                        class="selected-zone-progress-fill"
+                                        id="selectedZoneProgress"
+                                    ></div>
+
+                                </div>
+
+
+                                <div class="zone-impact-grid">
+
+                                    <div>
+                                        <span>👥</span>
+                                        <strong id="selectedPopulation">
+                                            1,250
+                                        </strong>
+                                        <small>Exposed</small>
+                                    </div>
+
+
+                                    <div>
+                                        <span>🚧</span>
+                                        <strong id="selectedRoads">
+                                            2
+                                        </strong>
+                                        <small>Roads</small>
+                                    </div>
+
+
+                                    <div>
+                                        <span>🏘</span>
+                                        <strong id="selectedVillages">
+                                            3
+                                        </strong>
+                                        <small>Villages</small>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="selected-zone-action">
+
+                                    <small>
+                                        RECOMMENDED ACTION
+                                    </small>
+
+                                    <strong id="selectedAction">
+                                        Alert & Field Verification
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="selected-zone-buttons">
+
+                                    <a
+                                        href="alerts.html"
+                                        class="btn btn-primary full-width-btn"
+                                    >
+                                        View Related Alerts
+                                    </a>
+
+                                    <a
+                                        href="reports.html"
+                                        class="btn btn-outline full-width-btn"
+                                    >
+                                        View Ground Reports
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </aside>
+
+
+                    <!-- =========================
+                         LEAFLET MAP
+                    ========================== -->
+                    <div class="map-main-container">
+
+                        <div
+                            id="landslideMap"
+                            class="landslide-map"
+                        ></div>
+
+
+                        <!-- Map Overlay -->
+                        <div class="map-overlay-top">
+
+                            <div class="map-overlay-card">
+
+                                <span>AI RISK ANALYSIS</span>
+
+                                <strong>
+                                    <i></i>
+                                    Monitoring Active
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Quick Map Controls -->
+                        <div class="map-quick-controls">
+
+                            <button
+                                class="map-quick-btn"
+                                id="locateUserBtn"
+                                title="Locate Me"
+                            >
+                                ⌖
+                            </button>
+
+                            <button
+                                class="map-quick-btn"
+                                id="resetMapBtn"
+                                title="Reset Map"
+                            >
+                                ↺
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     MAP INSIGHTS
+                ========================== -->
+                <section class="map-insights">
+
+                    <div class="map-insight-card">
+
+                        <div class="map-insight-icon">
+                            ⚠
+                        </div>
+
+                        <div>
+                            <span>Highest Priority</span>
+                            <strong>
+                                Zone A-17
+                            </strong>
+                            <p>
+                                High risk with significant population exposure.
+                            </p>
+                        </div>
+
+                        <a href="alerts.html">Review →</a>
+
+                    </div>
+
+
+                    <div class="map-insight-card">
+
+                        <div class="map-insight-icon">
+                            👥
+                        </div>
+
+                        <div>
+                            <span>Total Potential Exposure</span>
+                            <strong>
+                                4,280 People
+                            </strong>
+                            <p>
+                                Across currently monitored elevated-risk zones.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="map-insight-card">
+
+                        <div class="map-insight-icon">
+                            🚧
+                        </div>
+
+                        <div>
+                            <span>Connectivity Impact</span>
+                            <strong>
+                                6 Roads at Risk
+                            </strong>
+                            <p>
+                                2 road segments require immediate verification.
+                            </p>
+                        </div>
+
+                        <a href="alerts.html">Details →</a>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =========================
+                     MAP INFORMATION
+                ========================== -->
+                <section class="map-info-section">
+
+                    <div class="map-info-content">
+
+                        <span class="section-label">
+                            UNDERSTANDING THE MAP
+                        </span>
+
+                        <h2>
+                            Risk Alone Is Not
+                            <span>The Full Picture.</span>
+                        </h2>
+
+                        <p>
+                            GeoRakshak combines location-based risk with
+                            exposure and connectivity intelligence. A zone
+                            with moderate risk but thousands of potentially
+                            affected people may require greater attention
+                            than an isolated high-risk area.
+                        </p>
+
+                    </div>
+
+
+                    <div class="map-info-grid">
+
+                        <div class="map-info-item">
+
+                            <span>01</span>
+
+                            <h3>Risk</h3>
+
+                            <p>
+                                Where environmental and terrain conditions
+                                indicate potential landslide danger.
+                            </p>
+
+                        </div>
+
+
+                        <div class="map-info-item">
+
+                            <span>02</span>
+
+                            <h3>Impact</h3>
+
+                            <p>
+                                Who and what may be affected, including
+                                communities and infrastructure.
+                            </p>
+
+                        </div>
+
+
+                        <div class="map-info-item">
+
+                            <span>03</span>
+
+                            <h3>Action</h3>
+
+                            <p>
+                                Which situations should receive the highest
+                                priority and recommended response.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+    <footer class="footer">
+
+        <div class="container footer-container">
+
+            <div class="footer-brand">
+
+                <a href="index.html" class="logo">
+
+                    <div class="logo-icon">
+    <img src="assets/images/logo.png" alt="GeoRakshak Logo">
+</div>
+
+                    <div class="logo-text">
+                        <span class="logo-name">GeoRakshak</span>
+
+                        <span class="logo-tagline">
+                            Landslide Intelligence Platform
+                        </span>
+                    </div>
+
+                </a>
+
+                <p>
+                    AI-powered multi-source intelligence for
+                    last-mile landslide risk awareness and
+                    decision support.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <div>
+
+                    <h4>Platform</h4>
+
+                    <a href="index.html">Home</a>
+                    <a href="dashboard.html">Dashboard</a>
+                    <a href="map.html">Risk Map</a>
+
+                </div>
+
+
+                <div>
+
+                    <h4>Services</h4>
+
+                    <a href="reports.html">Citizen Reports</a>
+                    <a href="alerts.html">Alerts</a>
+                    <a href="dashboard.html#faq">FAQs</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="container footer-bottom">
+
+            <p>
+                © 2026 GeoRakshak. AI-Powered Landslide Intelligence Platform.
+            </p>
+
+            <p>
+                Predict Risk. Understand Impact. Act in Time.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================
+         SCRIPTS
+    ========================== -->
+
+    <!-- Leaflet JS -->
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    ></script>
+
+    <!-- Shared JavaScript -->
+    <script src="js/main.js"></script>
+
+    <!-- Map JavaScript -->
+    <script src="js/map.js"></script>
+
+</body>
+</html>
