@@ -1,1018 +1,667 @@
 /* =========================================================
-   GEORAKSHAK - MAP JAVASCRIPT
+   GEORAKSHAK - INTERACTIVE RISK MAP
    File: js/map.js
-
-   Handles:
-   - Fetching risk locations from api.js
-   - Interactive prototype GIS map
-   - Severity filtering
-   - Location search
-   - Map markers
-   - Location details panel
-   - URL parameters from alerts/dashboard
-   - Reset view
-   - Live data refresh
-
-   Requires:
-   - main.js
-   - api.js
-
-   NOTE:
-   This is a frontend prototype map.
-   Replace the map rendering section with Leaflet/Mapbox
-   when integrating a real GIS basemap.
 ========================================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
 
-    let allLocations = [];
-    let filteredLocations = [];
-    let selectedLocationId = null;
-    let currentSeverity = "all";
+    /* =====================================================
+       1. CHECK LEAFLET
+    ===================================================== */
+
+    if (typeof L === "undefined") {
+        console.error("Leaflet failed to load.");
+        return;
+    }
+
+    const mapElement = document.getElementById("landslideMap");
+
+    if (!mapElement) {
+        console.error("Map container #landslideMap not found.");
+        return;
+    }
 
 
     /* =====================================================
-       1. DOM ELEMENTS
+       2. INITIAL MAP
+       
+       Default location: Uttarakhand, India
     ===================================================== */
 
-    const mapCanvas =
-        document.querySelector(".risk-map-canvas");
+    const defaultCenter = [30.3165, 78.0322];
+    const defaultZoom = 9;
 
-    const locationList =
-        document.querySelector(".map-location-list");
-
-    const searchInput =
-        document.getElementById("mapSearch");
-
-    const severityFilters =
-        document.querySelectorAll("[data-map-filter]");
-
-    const locationCount =
-        document.querySelector("[data-map-location-count]");
-
-    const detailsPanel =
-        document.querySelector(".map-details-panel");
-
-    const resetButton =
-        document.querySelector("[data-map-reset]");
-
-    const fullscreenButton =
-        document.querySelector("[data-map-fullscreen]");
+    const map = L.map("landslideMap", {
+        center: defaultCenter,
+        zoom: defaultZoom,
+        zoomControl: true
+    });
 
 
     /* =====================================================
-       2. SEVERITY CONFIGURATION
+       3. REAL OPENSTREETMAP TILES
     ===================================================== */
 
-    const severityConfig = {
-        critical: {
-            label: "Critical",
-            className: "critical",
-            icon: "!"
-        },
-
-        high: {
-            label: "High",
-            className: "high",
-            icon: "!"
-        },
-
-        moderate: {
-            label: "Moderate",
-            className: "moderate",
-            icon: "!"
-        },
-
-        low: {
-            label: "Low",
-            className: "low",
-            icon: "✓"
+    L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            maxZoom: 19,
+            attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }
+    ).addTo(map);
+
+
+    /* =====================================================
+       4. LAYER GROUPS
+    ===================================================== */
+
+    const riskZonesGroup = L.layerGroup().addTo(map);
+    const roadsGroup = L.layerGroup().addTo(map);
+    const populationGroup = L.layerGroup().addTo(map);
+    const infrastructureGroup = L.layerGroup().addTo(map);
+    const reportsGroup = L.layerGroup().addTo(map);
+
+
+    /* =====================================================
+       5. RISK DATA
+    ===================================================== */
+
+    const zones = [
+
+        {
+            id: "zone-a17",
+            name: "Zone A-17",
+            location: "Mussoorie - Dehradun Corridor",
+            lat: 30.4595,
+            lng: 78.0669,
+            risk: "critical",
+            score: 82,
+            population: "1,250",
+            roads: "2",
+            villages: "3",
+            action: "Alert & Field Verification"
+        },
+
+        {
+            id: "zone-b12",
+            name: "Zone B-12",
+            location: "Tehri Garhwal Region",
+            lat: 30.3782,
+            lng: 78.4800,
+            risk: "critical",
+            score: 88,
+            population: "980",
+            roads: "1",
+            villages: "2",
+            action: "Immediate Field Assessment"
+        },
+
+        {
+            id: "zone-c08",
+            name: "Zone C-08",
+            location: "Rishikesh Hills",
+            lat: 30.0869,
+            lng: 78.2676,
+            risk: "high",
+            score: 71,
+            population: "760",
+            roads: "1",
+            villages: "2",
+            action: "Enhanced Monitoring"
+        },
+
+        {
+            id: "zone-d21",
+            name: "Zone D-21",
+            location: "Pauri Garhwal",
+            lat: 30.1460,
+            lng: 78.7775,
+            risk: "high",
+            score: 68,
+            population: "640",
+            roads: "1",
+            villages: "2",
+            action: "Field Verification Recommended"
+        },
+
+        {
+            id: "zone-e14",
+            name: "Zone E-14",
+            location: "Narendranagar Area",
+            lat: 30.1610,
+            lng: 78.2870,
+            risk: "high",
+            score: 65,
+            population: "650",
+            roads: "1",
+            villages: "1",
+            action: "Monitor Rainfall Conditions"
+        },
+
+        {
+            id: "zone-f09",
+            name: "Zone F-09",
+            location: "Dhanaulti Region",
+            lat: 30.4445,
+            lng: 78.2430,
+            risk: "moderate",
+            score: 52,
+            population: "520",
+            roads: "1",
+            villages: "2",
+            action: "Routine Monitoring"
+        },
+
+        {
+            id: "zone-g05",
+            name: "Zone G-05",
+            location: "Chamba Region",
+            lat: 30.3380,
+            lng: 78.2380,
+            risk: "moderate",
+            score: 48,
+            population: "410",
+            roads: "0",
+            villages: "1",
+            action: "Observe Terrain Conditions"
+        },
+
+        {
+            id: "zone-h19",
+            name: "Zone H-19",
+            location: "Rajpur Hills",
+            lat: 30.3790,
+            lng: 78.0900,
+            risk: "moderate",
+            score: 44,
+            population: "380",
+            roads: "0",
+            villages: "1",
+            action: "Routine Monitoring"
+        }
+
+    ];
+
+
+    /* =====================================================
+       6. RISK COLORS
+    ===================================================== */
+
+    const riskColors = {
+        critical: "#d64545",
+        high: "#e67e22",
+        moderate: "#d9a441",
+        low: "#2f8a62"
     };
 
 
     /* =====================================================
-       3. LOAD RISK LOCATIONS
+       7. ACTIVE FILTERS
     ===================================================== */
 
-    async function loadLocations() {
-
-        if (!mapCanvas) return;
-
-        showMapLoading();
-
-        try {
-
-            const response =
-                await GeoRakshakAPI.getRiskLocations();
-
-            if (!response.success) {
-
-                throw new Error(
-                    "Unable to load risk locations."
-                );
-
-            }
-
-            allLocations = response.data || [];
+    const activeRisks = {
+        critical: true,
+        high: true,
+        moderate: true,
+        low: true
+    };
 
 
-            /*
-               Check if an alert was passed through URL.
+    /* =====================================================
+       8. UPDATE SELECTED LOCATION PANEL
+    ===================================================== */
 
-               Example:
-               map.html?alert=alert-001
-            */
+    function updateSelectedZone(zone) {
 
-            await handleURLParameters();
+        const severity = document.getElementById(
+            "selectedZoneSeverity"
+        );
+
+        const name = document.getElementById(
+            "selectedZoneName"
+        );
+
+        const location = document.getElementById(
+            "selectedZoneLocation"
+        );
+
+        const risk = document.getElementById(
+            "selectedZoneRisk"
+        );
+
+        const progress = document.getElementById(
+            "selectedZoneProgress"
+        );
+
+        const population = document.getElementById(
+            "selectedPopulation"
+        );
+
+        const roads = document.getElementById(
+            "selectedRoads"
+        );
+
+        const villages = document.getElementById(
+            "selectedVillages"
+        );
+
+        const action = document.getElementById(
+            "selectedAction"
+        );
 
 
-            applyFilters();
+        if (severity) {
 
-        } catch (error) {
+            severity.textContent = zone.risk.toUpperCase();
 
-            console.error(
-                "GeoRakshak Map Error:",
-                error
-            );
+            severity.className =
+                "severity-badge " +
+                zone.risk +
+                "-badge";
 
-            showMapError(
-                error.message ||
-                "Unable to load map intelligence."
-            );
+        }
 
+
+        if (name) {
+            name.textContent = zone.name;
+        }
+
+        if (location) {
+            location.textContent = zone.location;
+        }
+
+        if (risk) {
+            risk.textContent = zone.score + "%";
+        }
+
+        if (progress) {
+
+            progress.style.width =
+                zone.score + "%";
+
+            progress.style.background =
+                riskColors[zone.risk];
+
+        }
+
+        if (population) {
+            population.textContent = zone.population;
+        }
+
+        if (roads) {
+            roads.textContent = zone.roads;
+        }
+
+        if (villages) {
+            villages.textContent = zone.villages;
+        }
+
+        if (action) {
+            action.textContent = zone.action;
         }
 
     }
 
 
     /* =====================================================
-       4. URL PARAMETERS
+       9. DRAW RISK ZONES
     ===================================================== */
 
-    async function handleURLParameters() {
+    function drawRiskZones() {
 
-        const params =
-            new URLSearchParams(
-                window.location.search
-            );
-
-        const alertId =
-            params.get("alert");
-
-        const locationId =
-            params.get("location");
+        riskZonesGroup.clearLayers();
 
 
-        /*
-           Direct location parameter
+        zones.forEach(function (zone) {
 
-           Example:
-           map.html?location=chamba-01
-        */
-
-        if (locationId) {
-
-            const exists =
-                allLocations.some(
-                    location =>
-                        location.id === locationId
-                );
-
-            if (exists) {
-
-                selectedLocationId = locationId;
-
+            if (!activeRisks[zone.risk]) {
+                return;
             }
 
-            return;
 
-        }
-
-
-        /*
-           Alert parameter
-
-           Example:
-           map.html?alert=alert-001
-
-           Fetch alert and match it to a location.
-        */
-
-        if (alertId) {
-
-            try {
-
-                const response =
-                    await GeoRakshakAPI.getAlertById(
-                        alertId
-                    );
-
-                if (
-                    response.success &&
-                    response.data
-                ) {
-
-                    const alert =
-                        response.data;
+            const color = riskColors[zone.risk];
 
 
-                    /*
-                       Match by location name.
-                       Production version should use
-                       a locationId directly in alert data.
-                    */
+            const circle = L.circle(
+                [zone.lat, zone.lng],
+                {
+                    radius:
+                        zone.risk === "critical"
+                            ? 4500
+                            : zone.risk === "high"
+                            ? 3500
+                            : 2800,
 
-                    const matchedLocation =
-                        allLocations.find(
-                            location =>
-                                location.name ===
-                                alert.location
-                        );
+                    color: color,
 
+                    fillColor: color,
 
-                    if (matchedLocation) {
+                    fillOpacity: 0.25,
 
-                        selectedLocationId =
-                            matchedLocation.id;
-
-                    }
-
+                    weight: 2
                 }
-
-            } catch (error) {
-
-                console.warn(
-                    "Unable to resolve alert location:",
-                    error
-                );
-
-            }
-
-        }
-
-    }
-
-
-    /* =====================================================
-       5. APPLY FILTERS
-    ===================================================== */
-
-    function applyFilters() {
-
-        filteredLocations =
-            [...allLocations];
-
-
-        // Severity filter
-        if (currentSeverity !== "all") {
-
-            filteredLocations =
-                filteredLocations.filter(
-                    location =>
-                        location.severity ===
-                        currentSeverity
-                );
-
-        }
-
-
-        // Search filter
-        const searchTerm =
-            searchInput
-                ? searchInput.value
-                    .toLowerCase()
-                    .trim()
-                : "";
-
-
-        if (searchTerm) {
-
-            filteredLocations =
-                filteredLocations.filter(
-                    location => {
-
-                        const searchableText =
-                            [
-                                location.name,
-                                location.district,
-                                location.state
-                            ]
-                                .filter(Boolean)
-                                .join(" ")
-                                .toLowerCase();
-
-
-                        return searchableText.includes(
-                            searchTerm
-                        );
-
-                    }
-                );
-
-        }
-
-
-        renderMapMarkers();
-        renderLocationList();
-        updateLocationCount();
-
-
-        /*
-           Re-select location after rendering
-           if selected through URL.
-        */
-
-        if (selectedLocationId) {
-
-            const selectedExists =
-                filteredLocations.some(
-                    location =>
-                        location.id ===
-                        selectedLocationId
-                );
-
-
-            if (selectedExists) {
-
-                selectLocation(
-                    selectedLocationId,
-                    false
-                );
-
-            }
-
-        }
-
-    }
-
-
-    /* =====================================================
-       6. RENDER MAP MARKERS
-    ===================================================== */
-
-    function renderMapMarkers() {
-
-        if (!mapCanvas) return;
-
-
-        /*
-           Preserve decorative map layers if present.
-           Only remove dynamically generated markers.
-        */
-
-        mapCanvas
-            .querySelectorAll(
-                ".dynamic-map-marker"
-            )
-            .forEach(marker => marker.remove());
-
-
-        if (filteredLocations.length === 0) {
-            return;
-        }
-
-
-        filteredLocations.forEach(
-            (location, index) => {
-
-                const marker =
-                    createMapMarker(
-                        location,
-                        index
-                    );
-
-                mapCanvas.appendChild(marker);
-
-            }
-        );
-
-    }
-
-
-    function createMapMarker(
-        location,
-        index
-    ) {
-
-        const marker =
-            document.createElement("button");
-
-        marker.type = "button";
-
-        marker.className =
-            `dynamic-map-marker marker-${location.severity}`;
-
-        marker.dataset.locationId =
-            location.id;
-
-        marker.setAttribute(
-            "aria-label",
-            `${location.name}: ${location.riskScore}% risk`
-        );
-
-
-        /*
-           Prototype marker positions.
-
-           In real GIS integration:
-           latitude + longitude will be converted
-           into actual map coordinates automatically.
-        */
-
-        const position =
-            getMarkerPosition(
-                location,
-                index
             );
 
-        marker.style.left =
-            `${position.left}%`;
 
-        marker.style.top =
-            `${position.top}%`;
-
-
-        const config =
-            severityConfig[
-                location.severity
-            ] ||
-            severityConfig.low;
-
-
-        marker.innerHTML = `
-            <span class="marker-pin">
-                ${config.icon}
-            </span>
-
-            <span class="marker-tooltip">
-                ${escapeHTML(location.name)}
-                <strong>
-                    ${location.riskScore}% Risk
-                </strong>
-            </span>
-        `;
-
-
-        marker.addEventListener(
-            "click",
-            () => {
-
-                selectLocation(
-                    location.id
-                );
-
-            }
-        );
-
-
-        return marker;
-
-    }
-
-
-    /*
-       Generate stable demo positions.
-
-       IMPORTANT:
-       This is only for the frontend prototype.
-       It does NOT represent actual geographic
-       positioning from latitude/longitude.
-    */
-
-    function getMarkerPosition(
-        location,
-        index
-    ) {
-
-        const presetPositions = {
-
-            "chamba-01": {
-                left: 68,
-                top: 28
-            },
-
-            "kullu-02": {
-                left: 42,
-                top: 48
-            },
-
-            "mandi-03": {
-                left: 57,
-                top: 68
-            },
-
-            "shimla-04": {
-                left: 76,
-                top: 72
-            }
-
-        };
-
-
-        if (
-            presetPositions[location.id]
-        ) {
-
-            return presetPositions[
-                location.id
-            ];
-
-        }
-
-
-        /*
-           Fallback for future API locations.
-        */
-
-        return {
-            left: 15 + ((index * 17) % 70),
-            top: 18 + ((index * 23) % 65)
-        };
-
-    }
-
-
-    /* =====================================================
-       7. RENDER LOCATION LIST
-    ===================================================== */
-
-    function renderLocationList() {
-
-        if (!locationList) return;
-
-
-        if (filteredLocations.length === 0) {
-
-            locationList.innerHTML = `
-                <div class="map-empty-state">
-
-                    <div class="empty-map-icon">
-                        ⌖
-                    </div>
-
-                    <h3>
-                        No Risk Zones Found
-                    </h3>
-
-                    <p>
-                        Try changing your search
-                        or severity filter.
-                    </p>
-
+            circle.bindPopup(`
+                <div class="georakshak-popup">
+                    <strong>${zone.name}</strong>
+                    <br>
+                    <small>${zone.location}</small>
+                    <hr>
+                    <b>Risk Level:</b>
+                    ${zone.risk.toUpperCase()}
+                    <br>
+                    <b>Risk Score:</b>
+                    ${zone.score}%
+                    <br>
+                    <b>Population:</b>
+                    ${zone.population}
+                    <br>
+                    <b>Roads at Risk:</b>
+                    ${zone.roads}
+                    <br>
+                    <br>
+                    <b>Action:</b>
+                    ${zone.action}
                 </div>
-            `;
+            `);
 
-            return;
 
+            circle.on("click", function () {
+
+                updateSelectedZone(zone);
+
+                map.setView(
+                    [zone.lat, zone.lng],
+                    12
+                );
+
+            });
+
+
+            circle.addTo(riskZonesGroup);
+
+        });
+
+    }
+
+
+    /* =====================================================
+       10. ROAD NETWORK
+    ===================================================== */
+
+    const roads = [
+
+        [
+            [30.3165, 78.0322],
+            [30.3800, 78.0800],
+            [30.4595, 78.0669]
+        ],
+
+        [
+            [30.0869, 78.2676],
+            [30.1610, 78.2870],
+            [30.3380, 78.2380]
+        ],
+
+        [
+            [30.3380, 78.2380],
+            [30.3782, 78.4800]
+        ]
+
+    ];
+
+
+    roads.forEach(function (road, index) {
+
+        const polyline = L.polyline(
+            road,
+            {
+                color:
+                    index === 0
+                        ? "#d64545"
+                        : "#e67e22",
+
+                weight: 5,
+
+                opacity: 0.75,
+
+                dashArray:
+                    index === 0
+                        ? "10, 8"
+                        : null
+            }
+        );
+
+
+        polyline.bindPopup(`
+            <strong>Road Segment R-${index + 1}</strong>
+            <br>
+            Connectivity monitoring active
+            <br>
+            Status: At Risk
+        `);
+
+
+        polyline.addTo(roadsGroup);
+
+    });
+
+
+    /* =====================================================
+       11. POPULATION EXPOSURE
+    ===================================================== */
+
+    const populationPoints = [
+
+        {
+            name: "Population Cluster A",
+            coords: [30.4510, 78.0740],
+            people: "1,250 people potentially exposed"
+        },
+
+        {
+            name: "Population Cluster B",
+            coords: [30.3700, 78.4700],
+            people: "980 people potentially exposed"
+        },
+
+        {
+            name: "Population Cluster C",
+            coords: [30.0950, 78.2750],
+            people: "760 people potentially exposed"
         }
 
-
-        const severityOrder = {
-            critical: 1,
-            high: 2,
-            moderate: 3,
-            low: 4
-        };
+    ];
 
 
-        const sortedLocations =
-            [...filteredLocations].sort(
-                (a, b) => {
+    populationPoints.forEach(function (point) {
 
-                    return (
-                        severityOrder[a.severity] -
-                        severityOrder[b.severity]
-                    );
-
-                }
-            );
-
-
-        locationList.innerHTML =
-            sortedLocations
-                .map(location => {
-
-                    const isSelected =
-                        location.id ===
-                        selectedLocationId;
-
-
-                    return `
-                        <button
-                            type="button"
-                            class="
-                                map-location-item
-                                ${
-                                    isSelected
-                                        ? "selected"
-                                        : ""
-                                }
-                            "
-                            data-map-location="${escapeHTML(
-                                location.id
-                            )}"
-                        >
-
-                            <span
-                                class="
-                                    location-risk-dot
-                                    dot-${location.severity}
-                                "
-                            ></span>
-
-
-                            <span class="location-item-content">
-
-                                <strong>
-                                    ${escapeHTML(
-                                        location.name
-                                    )}
-                                </strong>
-
-                                <small>
-                                    ${escapeHTML(
-                                        location.district
-                                    )},
-                                    ${escapeHTML(
-                                        location.state
-                                    )}
-                                </small>
-
-                            </span>
-
-
-                            <span
-                                class="
-                                    location-risk-value
-                                    value-${location.severity}
-                                "
-                            >
-                                ${location.riskScore}%
-                            </span>
-
-                        </button>
-                    `;
-
+        const marker = L.marker(
+            point.coords,
+            {
+                icon: L.divIcon({
+                    className: "population-marker",
+                    html: "👥",
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 16]
                 })
-                .join("");
-
-    }
-
-
-    /* =====================================================
-       8. LOCATION LIST CLICK
-    ===================================================== */
-
-    if (locationList) {
-
-        locationList.addEventListener(
-            "click",
-            event => {
-
-                const item =
-                    event.target.closest(
-                        "[data-map-location]"
-                    );
-
-                if (!item) return;
-
-
-                selectLocation(
-                    item.dataset.mapLocation
-                );
-
             }
         );
 
-    }
+
+        marker.bindPopup(`
+            <strong>${point.name}</strong>
+            <br>
+            ${point.people}
+        `);
+
+
+        marker.addTo(populationGroup);
+
+    });
 
 
     /* =====================================================
-       9. SELECT LOCATION
+       12. INFRASTRUCTURE
     ===================================================== */
 
-    function selectLocation(
-        locationId,
-        showNotification = true
-    ) {
+    const infrastructure = [
 
-        const location =
-            allLocations.find(
-                item =>
-                    item.id === locationId
-            );
+        {
+            name: "District Hospital",
+            type: "Critical Infrastructure",
+            coords: [30.3250, 78.0500],
+            icon: "🏥"
+        },
 
-        if (!location) return;
+        {
+            name: "Emergency Response Centre",
+            type: "Emergency Infrastructure",
+            coords: [30.4300, 78.1000],
+            icon: "🚑"
+        },
 
-
-        selectedLocationId =
-            locationId;
-
-
-        /*
-           Update markers
-        */
-
-        document
-            .querySelectorAll(
-                ".dynamic-map-marker"
-            )
-            .forEach(marker => {
-
-                marker.classList.toggle(
-                    "active",
-                    marker.dataset.locationId ===
-                    locationId
-                );
-
-            });
-
-
-        /*
-           Update location list
-        */
-
-        document
-            .querySelectorAll(
-                ".map-location-item"
-            )
-            .forEach(item => {
-
-                item.classList.toggle(
-                    "selected",
-                    item.dataset.mapLocation ===
-                    locationId
-                );
-
-            });
-
-
-        /*
-           Update details panel
-        */
-
-        renderLocationDetails(location);
-
-
-        /*
-           Scroll selected list item into view.
-        */
-
-        const selectedItem =
-            document.querySelector(
-                `[data-map-location="${locationId}"]`
-            );
-
-        if (selectedItem) {
-
-            selectedItem.scrollIntoView({
-                behavior: "smooth",
-                block: "nearest"
-            });
-
+        {
+            name: "Bridge Monitoring Point",
+            type: "Road Infrastructure",
+            coords: [30.2000, 78.2800],
+            icon: "🌉"
         }
 
-
-        if (
-            showNotification &&
-            window.showToast
-        ) {
-
-            const type =
-                location.severity === "critical"
-                    ? "error"
-                    : location.severity === "high"
-                        ? "warning"
-                        : "info";
+    ];
 
 
-            window.showToast(
-                `${location.name}: ${location.riskScore}% landslide risk.`,
-                type
-            );
+    infrastructure.forEach(function (place) {
 
-        }
+        const marker = L.marker(
+            place.coords,
+            {
+                icon: L.divIcon({
+                    className: "infrastructure-marker",
+                    html: place.icon,
+                    iconSize: [34, 34],
+                    iconAnchor: [17, 17]
+                })
+            }
+        );
 
-    }
+
+        marker.bindPopup(`
+            <strong>${place.name}</strong>
+            <br>
+            ${place.type}
+        `);
+
+
+        marker.addTo(infrastructureGroup);
+
+    });
 
 
     /* =====================================================
-       10. LOCATION DETAILS PANEL
+       13. GROUND REPORTS
     ===================================================== */
 
-    function renderLocationDetails(location) {
+    const reports = [
 
-        if (!detailsPanel) return;
+        {
+            title: "Fresh Soil Movement Reported",
+            coords: [30.4700, 78.0500],
+            time: "10 minutes ago"
+        },
 
+        {
+            title: "Road Crack Observation",
+            coords: [30.3500, 78.2200],
+            time: "25 minutes ago"
+        },
 
-        const severity =
-            severityConfig[
-                location.severity
-            ] ||
-            severityConfig.low;
+        {
+            title: "Heavy Debris Near Road",
+            coords: [30.1400, 78.3000],
+            time: "42 minutes ago"
+        },
 
-
-        detailsPanel.innerHTML = `
-
-            <div
-                class="
-                    map-details-header
-                    details-${location.severity}
-                "
-            >
-
-                <div>
-
-                    <span
-                        class="
-                            severity-badge
-                            ${location.severity}-badge
-                        "
-                    >
-                        ${severity.label} Risk
-                    </span>
-
-                    <h2>
-                        ${escapeHTML(location.name)}
-                    </h2>
-
-                    <p>
-                        ${escapeHTML(
-                            location.district
-                        )},
-                        ${escapeHTML(
-                            location.state
-                        )}
-                    </p>
-
-                </div>
-
-                <div class="details-risk-score">
-
-                    <strong>
-                        ${location.riskScore}%
-                    </strong>
-
-                    <span>
-                        Risk Score
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div class="map-details-grid">
-
-                <div class="map-detail-card">
-
-                    <span class="detail-label">
-                        Rainfall
-                    </span>
-
-                    <strong>
-                        ${location.rainfall ?? "N/A"} mm
-                    </strong>
-
-                </div>
-
-
-                <div class="map-detail-card">
-
-                    <span class="detail-label">
-                        Affected Population
-                    </span>
-
-                    <strong>
-                        ${Number(
-                            location.affectedPopulation || 0
-                        ).toLocaleString()}
-                    </strong>
-
-                </div>
-
-
-                <div class="map-detail-card">
-
-                    <span class="detail-label">
-                        Road Status
-                    </span>
-
-                    <strong>
-                        ${escapeHTML(
-                            location.roadStatus ||
-                            "Unknown"
-                        )}
-                    </strong>
-
-                </div>
-
-
-                <div class="map-detail-card">
-
-                    <span class="detail-label">
-                        Coordinates
-                    </span>
-
-                    <strong>
-                        ${
-                            location.latitude?.toFixed?.(4)
-                            ?? "N/A"
-                        },
-                        ${
-                            location.longitude?.toFixed?.(4)
-                            ?? "N/A"
-                        }
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="map-details-action">
-
-                <button
-                    type="button"
-                    class="btn btn-primary"
-                    data-open-location-alerts
-                >
-                    View Related Alerts
-                </button>
-
-            </div>
-        `;
-
-
-        const relatedAlertsButton =
-            detailsPanel.querySelector(
-                "[data-open-location-alerts]"
-            );
-
-
-        if (relatedAlertsButton) {
-
-            relatedAlertsButton.addEventListener(
-                "click",
-                () => {
-
-                    window.location.href =
-                        `alerts.html?location=${encodeURIComponent(
-                            location.name
-                        )}`;
-
-                }
-            );
-
+        {
+            title: "Slope Instability Report",
+            coords: [30.1000, 78.2600],
+            time: "1 hour ago"
         }
 
-    }
+    ];
+
+
+    reports.forEach(function (report) {
+
+        const marker = L.marker(
+            report.coords,
+            {
+                icon: L.divIcon({
+                    className: "report-marker",
+                    html: "⚑",
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15]
+                })
+            }
+        );
+
+
+        marker.bindPopup(`
+            <strong>Ground Report</strong>
+            <br>
+            ${report.title}
+            <br>
+            <small>${report.time}</small>
+        `);
+
+
+        marker.addTo(reportsGroup);
+
+    });
 
 
     /* =====================================================
-       11. SEVERITY FILTERS
+       14. INITIAL DRAW
     ===================================================== */
 
-    severityFilters.forEach(button => {
+    drawRiskZones();
+
+    updateSelectedZone(zones[0]);
+
+
+    /* =====================================================
+       15. RISK FILTER BUTTONS
+    ===================================================== */
+
+    const riskButtons = document.querySelectorAll(
+        ".map-risk-item"
+    );
+
+
+    riskButtons.forEach(function (button) {
 
         button.addEventListener(
             "click",
-            () => {
+            function () {
 
-                currentSeverity =
-                    button.dataset.mapFilter ||
-                    "all";
-
-
-                severityFilters.forEach(item => {
-                    item.classList.remove("active");
-                });
+                const risk =
+                    button.dataset.risk;
 
 
-                button.classList.add("active");
+                activeRisks[risk] =
+                    !activeRisks[risk];
 
 
-                /*
-                   Clear selection if it is no longer
-                   visible under the new filter.
-                */
-
-                if (
-                    selectedLocationId &&
-                    !filteredLocations.some(
-                        location =>
-                            location.id ===
-                            selectedLocationId
-                    )
-                ) {
-
-                    selectedLocationId = null;
-
-                }
+                button.classList.toggle(
+                    "active",
+                    activeRisks[risk]
+                );
 
 
-                applyFilters();
+                drawRiskZones();
 
             }
         );
@@ -1021,31 +670,183 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       12. MAP SEARCH
+       16. LAYER TOGGLES
     ===================================================== */
+
+    function toggleLayer(
+        checkboxId,
+        layerGroup
+    ) {
+
+        const checkbox =
+            document.getElementById(checkboxId);
+
+
+        if (!checkbox) {
+            return;
+        }
+
+
+        checkbox.addEventListener(
+            "change",
+            function () {
+
+                if (this.checked) {
+
+                    if (!map.hasLayer(layerGroup)) {
+                        map.addLayer(layerGroup);
+                    }
+
+                } else {
+
+                    if (map.hasLayer(layerGroup)) {
+                        map.removeLayer(layerGroup);
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+
+    toggleLayer(
+        "riskZonesLayer",
+        riskZonesGroup
+    );
+
+    toggleLayer(
+        "roadsLayer",
+        roadsGroup
+    );
+
+    toggleLayer(
+        "populationLayer",
+        populationGroup
+    );
+
+    toggleLayer(
+        "infrastructureLayer",
+        infrastructureGroup
+    );
+
+    toggleLayer(
+        "reportsLayer",
+        reportsGroup
+    );
+
+
+    /* =====================================================
+       17. LOCATION SEARCH
+       
+       Searches existing GeoRakshak zones
+    ===================================================== */
+
+    const searchInput =
+        document.getElementById("locationSearch");
+
+    const searchButton =
+        document.getElementById("locationSearchBtn");
+
+
+    function searchLocation() {
+
+        if (!searchInput) {
+            return;
+        }
+
+
+        const query =
+            searchInput.value
+                .trim()
+                .toLowerCase();
+
+
+        if (!query) {
+            return;
+        }
+
+
+        const foundZone =
+            zones.find(function (zone) {
+
+                return (
+                    zone.name
+                        .toLowerCase()
+                        .includes(query)
+
+                    ||
+
+                    zone.location
+                        .toLowerCase()
+                        .includes(query)
+                );
+
+            });
+
+
+        if (foundZone) {
+
+            map.setView(
+                [
+                    foundZone.lat,
+                    foundZone.lng
+                ],
+                13
+            );
+
+
+            updateSelectedZone(foundZone);
+
+            L.popup()
+                .setLatLng(
+                    [
+                        foundZone.lat,
+                        foundZone.lng
+                    ]
+                )
+                .setContent(`
+                    <strong>${foundZone.name}</strong>
+                    <br>
+                    ${foundZone.location}
+                    <br>
+                    Risk: ${foundZone.risk.toUpperCase()}
+                `)
+                .openOn(map);
+
+
+        } else {
+
+            alert(
+                "No monitored location found for: " +
+                searchInput.value
+            );
+
+        }
+
+    }
+
+
+    if (searchButton) {
+
+        searchButton.addEventListener(
+            "click",
+            searchLocation
+        );
+
+    }
+
 
     if (searchInput) {
 
-        let searchTimeout;
-
-
         searchInput.addEventListener(
-            "input",
-            () => {
+            "keydown",
+            function (event) {
 
-                clearTimeout(searchTimeout);
-
-
-                /*
-                   Small debounce to prevent excessive
-                   rendering while typing.
-                */
-
-                searchTimeout =
-                    setTimeout(
-                        applyFilters,
-                        250
-                    );
+                if (event.key === "Enter") {
+                    searchLocation();
+                }
 
             }
         );
@@ -1054,119 +855,164 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       13. RESET MAP VIEW
+       18. DISTRICT SELECT
     ===================================================== */
+
+    const districtSelect =
+        document.getElementById("districtSelect");
+
+
+    if (districtSelect) {
+
+        districtSelect.addEventListener(
+            "change",
+            function () {
+
+                const value = this.value;
+
+
+                if (value === "all") {
+
+                    map.setView(
+                        defaultCenter,
+                        defaultZoom
+                    );
+
+                }
+
+
+                if (value === "district-a") {
+
+                    map.setView(
+                        [30.4200, 78.0800],
+                        11
+                    );
+
+                }
+
+
+                if (value === "district-b") {
+
+                    map.setView(
+                        [30.2500, 78.3500],
+                        10
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       19. RESET MAP
+    ===================================================== */
+
+    function resetMapView() {
+
+        map.setView(
+            defaultCenter,
+            defaultZoom
+        );
+
+    }
+
+
+    const resetButton =
+        document.getElementById("resetMapBtn");
+
 
     if (resetButton) {
 
         resetButton.addEventListener(
             "click",
-            () => {
-
-                selectedLocationId = null;
-                currentSeverity = "all";
-
-
-                if (searchInput) {
-                    searchInput.value = "";
-                }
-
-
-                severityFilters.forEach(button => {
-
-                    button.classList.toggle(
-                        "active",
-                        button.dataset.mapFilter ===
-                        "all"
-                    );
-
-                });
-
-
-                if (detailsPanel) {
-
-                    detailsPanel.innerHTML = `
-                        <div class="map-details-placeholder">
-
-                            <div>
-                                ⌖
-                            </div>
-
-                            <h3>
-                                Select a Risk Zone
-                            </h3>
-
-                            <p>
-                                Click on a map marker or
-                                select a location to view
-                                detailed landslide intelligence.
-                            </p>
-
-                        </div>
-                    `;
-
-                }
-
-
-                applyFilters();
-
-
-                if (window.showToast) {
-
-                    window.showToast(
-                        "Map view reset successfully.",
-                        "info"
-                    );
-
-                }
-
-            }
+            resetMapView
         );
 
     }
 
 
     /* =====================================================
-       14. FULLSCREEN MAP
+       20. LOCATE USER
     ===================================================== */
 
-    if (fullscreenButton && mapCanvas) {
+    const locateButton =
+        document.getElementById("locateUserBtn");
 
-        fullscreenButton.addEventListener(
+
+    if (locateButton) {
+
+        locateButton.addEventListener(
             "click",
-            async () => {
+            function () {
 
-                try {
+                if (!navigator.geolocation) {
 
-                    if (
-                        !document.fullscreenElement
-                    ) {
-
-                        await mapCanvas.requestFullscreen();
-
-                    } else {
-
-                        await document.exitFullscreen();
-
-                    }
-
-                } catch (error) {
-
-                    console.warn(
-                        "Fullscreen unavailable:",
-                        error
+                    alert(
+                        "Geolocation is not supported by your browser."
                     );
 
-                    if (window.showToast) {
+                    return;
+                }
 
-                        window.showToast(
-                            "Fullscreen mode is not supported on this device.",
-                            "warning"
+
+                locateButton.disabled = true;
+
+                locateButton.textContent = "...";
+
+
+                navigator.geolocation.getCurrentPosition(
+
+                    function (position) {
+
+                        const lat =
+                            position.coords.latitude;
+
+                        const lng =
+                            position.coords.longitude;
+
+
+                        map.setView(
+                            [lat, lng],
+                            14
                         );
 
+
+                        L.marker([lat, lng])
+                            .addTo(map)
+                            .bindPopup(
+                                "<strong>Your Current Location</strong>"
+                            )
+                            .openPopup();
+
+
+                        locateButton.disabled = false;
+
+                        locateButton.textContent = "⌖";
+
+                    },
+
+
+                    function () {
+
+                        alert(
+                            "Unable to access your location. Please allow location permission."
+                        );
+
+                        locateButton.disabled = false;
+
+                        locateButton.textContent = "⌖";
+
+                    },
+
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000
                     }
 
-                }
+                );
 
             }
         );
@@ -1175,183 +1021,82 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       15. LOCATION COUNT
+       21. REFRESH MAP
     ===================================================== */
 
-    function updateLocationCount() {
-
-        if (!locationCount) return;
-
-
-        locationCount.textContent =
-            `${filteredLocations.length} ${
-                filteredLocations.length === 1
-                    ? "Zone"
-                    : "Zones"
-            }`;
-
-    }
+    const refreshButton =
+        document.getElementById("mapRefreshBtn");
 
 
-    /* =====================================================
-       16. MAP LOADING STATE
-    ===================================================== */
-
-    function showMapLoading() {
-
-        if (!mapCanvas) return;
+    const updatedText =
+        document.getElementById("mapLastUpdated");
 
 
-        const loading =
-            document.createElement("div");
+    if (refreshButton) {
 
-        loading.className =
-            "map-loading-overlay";
+        refreshButton.addEventListener(
+            "click",
+            function () {
 
-        loading.innerHTML = `
-            <div class="loading-spinner"></div>
+                refreshButton.disabled = true;
 
-            <p>
-                Loading geospatial intelligence...
-            </p>
-        `;
-
-        mapCanvas.appendChild(loading);
-
-    }
+                refreshButton.textContent =
+                    "↻ Updating...";
 
 
-    /* =====================================================
-       17. MAP ERROR STATE
-    ===================================================== */
+                setTimeout(function () {
 
-    function showMapError(message) {
-
-        if (!mapCanvas) return;
+                    drawRiskZones();
 
 
-        mapCanvas.innerHTML = `
-            <div class="map-error-state">
+                    if (updatedText) {
 
-                <div class="error-icon">
-                    !
-                </div>
-
-                <h3>
-                    Map Data Unavailable
-                </h3>
-
-                <p>
-                    ${escapeHTML(message)}
-                </p>
-
-                <button
-                    type="button"
-                    class="btn btn-primary"
-                    data-map-retry
-                >
-                    Retry
-                </button>
-
-            </div>
-        `;
+                        const now =
+                            new Date();
 
 
-        const retryButton =
-            mapCanvas.querySelector(
-                "[data-map-retry]"
-            );
+                        updatedText.textContent =
+                            now.toLocaleTimeString(
+                                [],
+                                {
+                                    hour:
+                                        "2-digit",
+
+                                    minute:
+                                        "2-digit"
+                                }
+                            );
+
+                    }
 
 
-        if (retryButton) {
+                    refreshButton.disabled = false;
 
-            retryButton.addEventListener(
-                "click",
-                loadLocations
-            );
+                    refreshButton.textContent =
+                        "↻ Refresh";
 
-        }
-
-    }
-
-
-    /* =====================================================
-       18. ESCAPE HTML
-       Protect API text before rendering.
-    ===================================================== */
-
-    function escapeHTML(value) {
-
-        if (
-            value === null ||
-            value === undefined
-        ) {
-            return "";
-        }
-
-
-        const div =
-            document.createElement("div");
-
-        div.textContent =
-            String(value);
-
-        return div.innerHTML;
-
-    }
-
-
-    /* =====================================================
-       19. AUTO REFRESH
-
-       Refresh every 60 seconds.
-
-       In production:
-       - WebSocket for instant critical updates
-       - API polling as fallback
-    ===================================================== */
-
-    let refreshInterval =
-        setInterval(
-            loadLocations,
-            60000
-        );
-
-
-    document.addEventListener(
-        "visibilitychange",
-        () => {
-
-            if (document.hidden) {
-
-                clearInterval(refreshInterval);
-
-            } else {
-
-                loadLocations();
-
-                refreshInterval =
-                    setInterval(
-                        loadLocations,
-                        60000
-                    );
+                }, 700);
 
             }
+        );
 
-        }
-    );
+    }
 
 
     /* =====================================================
-       20. INITIALIZE MAP
+       22. HANDLE MAP RESIZE
     ===================================================== */
 
-    loadLocations();
+    setTimeout(function () {
+        map.invalidateSize();
+    }, 300);
 
 
-    console.log(
-        "%cGeoRakshak GIS Module Ready",
-        "color: #1f6f50; font-weight: bold;"
+    window.addEventListener(
+        "resize",
+        function () {
+            map.invalidateSize();
+        }
     );
 
 });
