@@ -1,0 +1,879 @@
+/* =========================================================
+   GEORAKSHAK - RESPONSIVE STYLESHEET
+   Works with:
+   - index.html
+   - dashboard.html
+   - alerts.html
+   - map.html
+   - reports.html
+
+   IMPORTANT:
+   Load this file AFTER style.css
+========================================================= */
+
+
+/* =========================================================
+   1. LARGE LAPTOPS / SMALL DESKTOPS
+   Width: 1200px and below
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .container {
+        width: min(100% - 48px, 1100px);
+    }
+
+    /* Dashboard */
+    .dashboard-grid {
+        grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.9fr);
+    }
+
+    .dashboard-secondary-grid {
+        gap: 18px;
+    }
+
+    /* Map */
+    .map-layout {
+        grid-template-columns: 300px minmax(0, 1fr);
+    }
+
+    /* Reports */
+    .reports-main-grid {
+        grid-template-columns: minmax(0, 1.5fr) 310px;
+    }
+
+    .public-reports-grid {
+        gap: 15px;
+    }
+
+}
+
+
+/* =========================================================
+   2. TABLETS / SMALL LAPTOPS
+   Width: 1050px and below
+========================================================= */
+
+@media (max-width: 1050px) {
+
+    /* Navigation */
+    .nav-links {
+        gap: 16px;
+    }
+
+    .nav-link {
+        font-size: 0.82rem;
+    }
+
+    /* Dashboard */
+    .dashboard-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-secondary-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashboard-secondary-grid .reports-summary-card {
+        grid-column: span 2;
+    }
+
+    /* Map */
+    .map-layout {
+        grid-template-columns: 280px minmax(0, 1fr);
+    }
+
+    .map-insights {
+        grid-template-columns: 1fr;
+    }
+
+    .map-info-section {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+
+    /* Reports */
+    .reports-main-grid {
+        grid-template-columns: minmax(0, 1fr) 290px;
+        gap: 18px;
+    }
+
+    .report-form-card {
+        padding: 28px;
+    }
+
+    .public-reports-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+/* =========================================================
+   3. TABLET / MOBILE NAVIGATION BREAKPOINT
+   Width: 900px and below
+========================================================= */
+
+@media (max-width: 900px) {
+
+    /* -------------------------
+       Navigation
+    ------------------------- */
+
+    .navbar {
+        position: sticky;
+        top: 0;
+    }
+
+    .nav-container {
+        position: relative;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-actions .btn {
+        display: none;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: calc(100% + 1px);
+        left: 0;
+        right: 0;
+
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+
+        padding: 10px 24px 20px;
+
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+        box-shadow: var(--shadow-md);
+    }
+
+    .nav-links.show {
+        display: flex;
+    }
+
+    .nav-link {
+        padding: 14px 0;
+        font-size: 0.9rem;
+    }
+
+    .nav-link.active {
+        padding-left: 12px;
+        border-left: 3px solid var(--primary);
+    }
+
+    .nav-link.active::after {
+        display: none;
+    }
+
+
+    /* -------------------------
+       Page Headers
+    ------------------------- */
+
+    .dashboard-title-row,
+    .map-header-content,
+    .reports-header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dashboard-header-actions,
+    .map-header-status {
+        align-items: flex-start;
+    }
+
+
+    /* -------------------------
+       Dashboard
+    ------------------------- */
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-map {
+        min-height: 500px;
+    }
+
+
+    /* -------------------------
+       Reports
+    ------------------------- */
+
+    .reports-main-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .reports-sidebar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .reports-sidebar > :first-child {
+        grid-column: span 2;
+    }
+
+
+    /* -------------------------
+       Map
+    ------------------------- */
+
+    .map-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .map-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .selected-zone-panel {
+        border-bottom: 1px solid var(--border);
+    }
+
+    .map-main-container {
+        min-height: 600px;
+    }
+
+    .landslide-map {
+        min-height: 600px;
+    }
+
+}
+
+
+/* =========================================================
+   4. TABLETS
+   Width: 768px and below
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .container {
+        width: min(100% - 36px, var(--container-width));
+    }
+
+
+    /* -------------------------
+       Global
+    ------------------------- */
+
+    .section-heading {
+        margin-bottom: 35px;
+    }
+
+    .section-heading h2 {
+        font-size: 2.2rem;
+    }
+
+
+    /* -------------------------
+       Headers
+    ------------------------- */
+
+    .dashboard-header,
+    .map-page-header,
+    .reports-page-header {
+        padding: 42px 0 32px;
+    }
+
+    .dashboard-header h1,
+    .map-page-header h1,
+    .reports-page-header h1 {
+        font-size: 2.4rem;
+    }
+
+
+    /* -------------------------
+       Dashboard
+    ------------------------- */
+
+    .dashboard-section {
+        padding: 30px 0 60px;
+    }
+
+    .dashboard-secondary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-secondary-grid .reports-summary-card {
+        grid-column: auto;
+    }
+
+    .dashboard-card-header {
+        padding: 18px;
+    }
+
+    .priority-list,
+    .recent-reports-list,
+    .action-list {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+
+    /* Intelligence Summary */
+
+    .intelligence-summary {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 25px;
+    }
+
+    .intelligence-summary-actions {
+        width: 100%;
+    }
+
+    .intelligence-summary-actions .btn {
+        flex: 1;
+    }
+
+
+    /* -------------------------
+       Map
+    ------------------------- */
+
+    .map-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .map-search-container {
+        width: 100%;
+    }
+
+    .map-toolbar-actions {
+        justify-content: space-between;
+    }
+
+    .map-toolbar-actions .dashboard-select {
+        flex: 1;
+    }
+
+    .map-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .map-sidebar {
+        max-height: none;
+    }
+
+    .map-panel {
+        padding: 18px;
+    }
+
+
+    /* -------------------------
+       Reports
+    ------------------------- */
+
+    .reports-header-stats {
+        width: 100%;
+    }
+
+    .report-header-stat {
+        flex: 1;
+    }
+
+    .report-form-card {
+        padding: 25px;
+    }
+
+    .public-reports-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+
+    /* -------------------------
+       Footer
+    ------------------------- */
+
+    .footer-container {
+        flex-direction: column;
+        gap: 35px;
+    }
+
+    .footer-brand {
+        max-width: 100%;
+    }
+
+}
+
+
+/* =========================================================
+   5. LARGE MOBILE / SMALL TABLET
+   Width: 600px and below
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .container {
+        width: min(100% - 28px, var(--container-width));
+    }
+
+
+    /* -------------------------
+       Global
+    ------------------------- */
+
+    .btn {
+        min-height: 42px;
+        padding: 10px 16px;
+    }
+
+    .section-heading h2 {
+        font-size: 1.9rem;
+    }
+
+
+    /* -------------------------
+       Navigation
+    ------------------------- */
+
+    .nav-container {
+        min-height: 64px;
+    }
+
+    .nav-links {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .logo-icon {
+        width: 38px;
+        height: 38px;
+    }
+
+    .logo-name {
+        font-size: 0.92rem;
+    }
+
+
+    /* -------------------------
+       Headers
+    ------------------------- */
+
+    .dashboard-header,
+    .map-page-header,
+    .reports-page-header {
+        padding: 35px 0 28px;
+    }
+
+    .dashboard-header h1,
+    .map-page-header h1,
+    .reports-page-header h1 {
+        font-size: 2rem;
+    }
+
+
+    /* -------------------------
+       Dashboard
+    ------------------------- */
+
+    .dashboard-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .dashboard-stat-card {
+        padding: 16px;
+    }
+
+    .dashboard-stat-card > strong {
+        font-size: 1.55rem;
+    }
+
+    .dashboard-map {
+        min-height: 380px;
+    }
+
+    .map-marker {
+        font-size: 0.6rem;
+        padding: 5px 7px;
+    }
+
+    .map-legend {
+        left: 12px;
+        bottom: 12px;
+        gap: 7px;
+        font-size: 0.58rem;
+    }
+
+    .priority-row {
+        gap: 10px;
+    }
+
+
+    /* -------------------------
+       Intelligence Summary
+    ------------------------- */
+
+    .intelligence-summary {
+        padding: 22px;
+    }
+
+    .intelligence-summary-content {
+        gap: 15px;
+    }
+
+    .intelligence-summary h2 {
+        font-size: 1.2rem;
+    }
+
+    .intelligence-summary p {
+        font-size: 0.78rem;
+    }
+
+
+    /* -------------------------
+       FAQ
+    ------------------------- */
+
+    .faq-section {
+        padding-top: 60px;
+    }
+
+    .faq-question {
+        padding: 16px;
+        font-size: 0.84rem;
+    }
+
+    .faq-answer p {
+        padding: 0 16px 16px;
+        font-size: 0.78rem;
+    }
+
+
+    /* -------------------------
+       Map
+    ------------------------- */
+
+    .map-toolbar-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .map-toolbar-actions .btn,
+    .map-toolbar-actions select {
+        width: 100%;
+    }
+
+    .map-main-container {
+        min-height: 500px;
+    }
+
+    .landslide-map {
+        min-height: 500px;
+    }
+
+    .map-overlay-top {
+        top: 10px;
+        left: 10px;
+    }
+
+    .map-quick-controls {
+        right: 10px;
+        bottom: 10px;
+    }
+
+
+    /* -------------------------
+       Reports
+    ------------------------- */
+
+    .reports-header-stats {
+        flex-direction: column;
+    }
+
+    .report-header-stat {
+        width: 100%;
+    }
+
+    .report-form-card {
+        padding: 20px 16px;
+    }
+
+    .report-form-header h2 {
+        font-size: 1.4rem;
+    }
+
+    .location-form-grid,
+    .coordinates-grid,
+    .reporter-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .severity-options {
+        grid-template-columns: 1fr;
+    }
+
+    .coordinates-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .public-reports-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .reports-sidebar {
+        grid-template-columns: 1fr;
+    }
+
+    .reports-sidebar > :first-child {
+        grid-column: auto;
+    }
+
+    .image-preview-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+
+    /* -------------------------
+       Footer
+    ------------------------- */
+
+    .footer {
+        padding-top: 40px;
+    }
+
+    .footer-links {
+        gap: 30px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+}
+
+
+/* =========================================================
+   6. MOBILE
+   Width: 480px and below
+========================================================= */
+
+@media (max-width: 480px) {
+
+    /* Navigation */
+
+    .logo-tagline {
+        display: none;
+    }
+
+    .menu-toggle {
+        width: 38px;
+        height: 38px;
+    }
+
+
+    /* Global */
+
+    .breadcrumb {
+        font-size: 0.72rem;
+        gap: 6px;
+    }
+
+
+    /* Dashboard */
+
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-stat-card {
+        min-height: 110px;
+    }
+
+    .dashboard-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dashboard-map {
+        min-height: 330px;
+    }
+
+    .priority-row {
+        align-items: flex-start;
+    }
+
+    .priority-title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .priority-info p {
+        font-size: 0.68rem;
+    }
+
+
+    /* Intelligence */
+
+    .intelligence-summary-content {
+        flex-direction: column;
+    }
+
+    .intelligence-summary-actions {
+        flex-direction: column;
+    }
+
+    .intelligence-summary-actions .btn {
+        width: 100%;
+    }
+
+
+    /* Map */
+
+    .map-layout {
+        border-radius: 10px;
+    }
+
+    .map-risk-item {
+        padding: 8px;
+    }
+
+    .zone-impact-grid > div {
+        padding: 10px 3px;
+    }
+
+    .map-main-container {
+        min-height: 430px;
+    }
+
+    .landslide-map {
+        min-height: 430px;
+    }
+
+
+    /* Reports */
+
+    .file-upload-area {
+        min-height: 180px;
+    }
+
+    .file-upload-content {
+        padding: 18px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 11px;
+    }
+
+
+    /* Footer */
+
+    .footer-links {
+        flex-direction: column;
+        gap: 25px;
+    }
+
+}
+
+
+/* =========================================================
+   7. VERY SMALL DEVICES
+   Width: 360px and below
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .container {
+        width: min(100% - 20px, var(--container-width));
+    }
+
+    .logo-name {
+        font-size: 0.85rem;
+    }
+
+    .dashboard-header h1,
+    .map-page-header h1,
+    .reports-page-header h1 {
+        font-size: 1.75rem;
+    }
+
+    .dashboard-stat-card {
+        padding: 14px;
+    }
+
+    .dashboard-stat-card > strong {
+        font-size: 1.4rem;
+    }
+
+    .map-legend {
+        padding: 8px;
+    }
+
+    .map-legend div {
+        font-size: 0.55rem;
+    }
+
+    .severity-option-content {
+        padding: 10px;
+    }
+
+}
+
+
+/* =========================================================
+   8. LANDSCAPE MOBILE FIXES
+========================================================= */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+    .nav-links {
+        max-height: 75vh;
+        overflow-y: auto;
+    }
+
+    .dashboard-header,
+    .map-page-header,
+    .reports-page-header {
+        padding-top: 25px;
+        padding-bottom: 25px;
+    }
+
+    .map-main-container,
+    .landslide-map {
+        min-height: 400px;
+    }
+
+}
+
+
+/* =========================================================
+   9. TOUCH DEVICE IMPROVEMENTS
+========================================================= */
+
+@media (hover: none) {
+
+    .btn:hover,
+    .public-report-card:hover {
+        transform: none;
+    }
+
+    .nav-link,
+    .btn,
+    .faq-question,
+    .map-risk-item,
+    .layer-item {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+}
+
+
+/* =========================================================
+   END OF RESPONSIVE STYLES
+========================================================= */
